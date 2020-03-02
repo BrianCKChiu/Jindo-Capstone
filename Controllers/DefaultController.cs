@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Jindo_Capstone.Controller
+namespace Jindo_Capstone.Controllers
 {
     public class DefaultController : Controller
     {
