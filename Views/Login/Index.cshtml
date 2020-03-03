@@ -1,0 +1,41 @@
+﻿@model Jindo_Capstone.Model.Employee
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
+    {
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.userName)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.userName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.password)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.password)
+                </td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="login" value="Log In" /></td>
+                <td><input type="reset" name="reset" value="Reset" /></td>
+            </tr>
+        </table>
+        <p> @Html.DisplayFor(model => model.errorMessage) </p>
+    }
+</body>
+</html>
