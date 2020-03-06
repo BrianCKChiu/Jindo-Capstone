@@ -19,7 +19,8 @@
                     @Html.LabelFor(model => model.userName)
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.userName)
+                    
+                    @Html.TextBoxFor(model => model.userName, new { @Value = "user123" } )
                 </td>
             </tr>
             <tr>
@@ -27,7 +28,8 @@
                     @Html.LabelFor(model => model.password)
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.password)
+                   
+                    @Html.PasswordFor(model=>model.password, new {@Value="karnataka" })
                 </td>
             </tr>
             <tr>
