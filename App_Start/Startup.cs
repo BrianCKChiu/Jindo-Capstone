@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
 using Jindo_Capstone.Workers;
-[assembly: OwinStartup(typeof(Jindo_Capstone.App_Start.Startup1))]
+[assembly: OwinStartup(typeof(Jindo_Capstone.App_Start.Startup))]
 
 namespace Jindo_Capstone.App_Start
 {
-    public class Startup1
+    public class Startup
     {
         public void Configuration(IAppBuilder app)
         {

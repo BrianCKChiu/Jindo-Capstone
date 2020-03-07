@@ -9,5 +9,6 @@ namespace Jindo_Capstone.Model
     public class DBContext : DbContext
     {
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

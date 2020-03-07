@@ -11,16 +11,25 @@ namespace Jindo_Capstone.Workers
     public class SendTextMessageJob
     {
 
-        const string MessageTempalte = "Hello {} text me plox";
+        const string TxtMsgTempalte = "Hello {1}. This is an automated text message from CPOS. Would you like us to send a box of paper rolls? Type YES if you want to start the ordering process.";
 
         public void Execute()
         {
             SubscribedCustomer().ForEach(c =>
             {
-
+                String message = String.Format(TxtMsgTempalte, c.Name);
+                using(DBContext db = new DBContext())
+                {
+                    Message msgObject = new Message()
+                    {
+                        Customer = c,
+                        MessageContent = message
+                    };
+                    
+                    db.Messages.Add(msgObject);
+                }
                 Console.WriteLine(c.Name);
-            }
-                );
+            });
         }
 
         public static IEnumerable<Customer> SubscribedCustomer()
