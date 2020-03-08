@@ -19,6 +19,7 @@ namespace Jindo_Capstone.Clients
         public TwilioClient()
         {
             _client = new TwilioRestClient(_accountSid, _tokenAuth);
+            
         }
         public TwilioClient(TwilioRestClient client)
         {
@@ -30,7 +31,8 @@ namespace Jindo_Capstone.Clients
                 MessageResource.Create(
                     body: msg.MessageContent,
                     from: _twilioNumber,
-                    to: msg.Customer.PhoneNumber);
+                    to: msg.Customer.PhoneNumber,
+                    client: _client);
         }
     }
 }
