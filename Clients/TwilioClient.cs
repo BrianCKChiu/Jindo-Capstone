@@ -7,7 +7,7 @@ using System.Web.Configuration;
 using Twilio.Clients;
 using Twilio.Rest.Api.V2010.Account;
 
-namespace Jindo_Capstone
+namespace Jindo_Capstone.Clients
 {
     public class TwilioClient
     {
@@ -27,11 +27,10 @@ namespace Jindo_Capstone
 
         public void SendMessage(Message msg)
         {
-            MessageResource.Create(
-                body: msg.MessageContent,
-                from: _twilioNumber,
-                to: msg.Customer.PhoneNumber
-                );
+                MessageResource.Create(
+                    body: msg.MessageContent,
+                    from: _twilioNumber,
+                    to: msg.Customer.PhoneNumber);
         }
     }
 }
