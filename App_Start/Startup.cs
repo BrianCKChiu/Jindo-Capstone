@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
 using Jindo_Capstone.Workers;
+using Hangfire;
+using System.Collections.Generic;
+
 [assembly: OwinStartup(typeof(Jindo_Capstone.App_Start.Startup))]
 
 namespace Jindo_Capstone.App_Start
@@ -13,11 +16,21 @@ namespace Jindo_Capstone.App_Start
         {
             // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
             SendTextMessageJob s = new SendTextMessageJob();
-            s.Execute();
-
+            //s.Execute();
+            app.UseHangfireAspNet(GetHangfireServers);
+            app.UseHangfireDashboard("/jobs");
+            //BackgroundJob.Enqueue(() => s.Execute());
+            RecurringJob.AddOrUpdate("Send-TextMsg", () => s.Execute(), Cron.Minutely);
         }
         public void Configure(IAppBuilder app) {
 
+        }
+
+        private IEnumerable<IDisposable> GetHangfireServers()
+        {
+            GlobalConfiguration.Configuration
+                .UseSqlServerStorage("Hangfire");
+            yield return new BackgroundJobServer(); 
         }
     }
 }
