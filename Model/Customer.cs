@@ -11,12 +11,23 @@ namespace Jindo_Capstone.Model
         [Required]
         public int CustID { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string ContactName { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
+        public string ShippingAddress { get; set; }
         public DateTime NextReminderTime { get; set; }
         public DateTime LastMessageDate { get; set; }
-        
+        [Required]
+        public int MsgTypeId { 
+            get  {
+                return (int)this.PerferedMsgType;
+            }
+            set {
+                PerferedMsgType = (MessageType)value;
+            }
+        }
+        [EnumDataType(typeof(MessageType))]
+        public MessageType PerferedMsgType { get; set; }
         [Required]
         public bool IsSubscribed { get; set; }
     }
