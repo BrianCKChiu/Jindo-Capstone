@@ -31,7 +31,7 @@ namespace Jindo_Capstone.Clients
                 MessageResource.Create(
                     body: msg.MessageContent,
                     from: _twilioNumber,
-                    to: msg.Customer.PhoneNumber,
+                    to: msg.customer.PhoneNumber,
                     client: _client);
         }
     }

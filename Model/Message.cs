@@ -14,7 +14,7 @@ namespace Jindo_Capstone.Model
         [Required]
         public DateTime Date { get; set; }
         [Required]
-        public Customer Customer { get; set; }
+        public Customer customer { get; set; }
         [Required]
         public string MessageContent { get; set; }
 
