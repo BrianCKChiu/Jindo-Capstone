@@ -18,17 +18,18 @@ namespace Jindo_Capstone.Workers
             SubscribedCustomer().ForEach(c =>
             {
                 var twilioRestClient = new TwilioClient();
-                String message = String.Format(TxtMsgTempalte, c.Name);
+                String message = String.Format(TxtMsgTempalte, c.ContactName);
                 using(DBContext db = new DBContext())
                 {
                     Message msgObject = new Message()
                     {
-                        Customer = c,
+                        customer = c,
                         MessageContent = message,
                         Date = DateTime.Now
                     };
-                    twilioRestClient.SendMessage(msgObject);
-                    db.Messages.Add(msgObject);
+                    System.Diagnostics.Debug.WriteLine("Message Sent");
+                    //twilioRestClient.SendMessage(msgObject);
+                    //db.Messages.Add(msgObject);
                 }
             });
         }
