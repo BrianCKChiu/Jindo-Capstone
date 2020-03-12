@@ -1,0 +1,46 @@
+﻿
+@model Jindo_Capstone.Model.CustomerViewModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+
+            <table>
+
+                <tr>
+                    <td>Message</td>
+                    <td>Contact Name</td>
+                    <td>Phone</td>
+                    <td>Address</td>
+                    <td>LastMessaged</td>
+
+                </tr>
+                @if (Model != null)
+                {
+
+                    for (var i = 0; i < Model.Customers.Count; i++)
+                    {
+            <tr id="@Model.Customers[i].CustID">
+                <td><button onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'">Send Message</button></td>
+                <td>@Model.Customers[i].ContactName</td>
+                <td>@Model.Customers[i].PhoneNumber</td>
+                <td>@Model.Customers[i].ShippingAddress</td>
+                <td>@(Model.Customers[i].LastMessaged?.ToString("MM/dd/yyyy h:mm tt")) </td>
+            </tr>
+
+                        
+                        }
+                }
+                    </table>
+
+
+        
+    </div>
+        
+</body>
+</html>

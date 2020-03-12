@@ -15,40 +15,20 @@ namespace Jindo_Capstone
         {
             using(DBContext db = new DBContext())
             {
-                //var customerQuery = FROM c IN db.Customers WHERE c.IsSubscribed AND c.MsgTypeId = MessageType SELECT c;
-                //return customerQuery;
-                return new Customer[] 
-                { 
-                    new Customer 
-                    { 
-                        CustID = 2,
-                        ContactName = "Brian",
-                        IsSubscribed = true,
-                        PhoneNumber = "+16473278411",
-                        MsgTypeId = 1
-                    } 
-                };
+                var customerQuery = from c in db.Customers where c.IsSubscribed select c;
+                return customerQuery.ToList();
+
             }
             
         }
 
         //TODO: check if date is on the same day of message
-        public IEnumerable<Customer> FindSubscribedCustomers(DateTime date)
+        public IEnumerable<Customer> FindSubscribedCustomers(int id)
         {
             using (DBContext db = new DBContext())
             {
-                //var customerQuery = from c in db.Customers where c.IsSubscribed select c;
-                //return customerQuery;
-                return new Customer[]
-                {
-                    new Customer
-                    {
-                        CustID = 2,
-                        ContactName = "Brian",
-                        IsSubscribed = true,
-                        PhoneNumber = "+16473278411"
-                    }
-                };
+                var customerQuery = from c in db.Customers where c.IsSubscribed && c.CustID == id select c;
+                return customerQuery.ToList();
             }
 
         }

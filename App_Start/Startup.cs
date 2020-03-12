@@ -15,12 +15,14 @@ namespace Jindo_Capstone.App_Start
         public void Configuration(IAppBuilder app)
         {
             // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
-            SendTextMessageJob s = new SendTextMessageJob();
+            //SendTextMessageJob s = new SendTextMessageJob();
             //s.Execute();
             app.UseHangfireAspNet(GetHangfireServers);
             app.UseHangfireDashboard("/jobs");
             //BackgroundJob.Enqueue(() => s.Execute());
-            RecurringJob.AddOrUpdate("Send-TextMsg", () => s.Execute(), Cron.Minutely);
+            //Executes task bi-weekly on wensday at noon 
+            //RecurringJob.AddOrUpdate("Send-TextMsg", () => SendTextMessageJob.Execute(), "* 12 */15 * 3" );
+            RecurringJob.AddOrUpdate("Send-TextMsg", () => SendTextMessageJob.Execute(), Cron.Hourly);
         }
         public void Configure(IAppBuilder app) {
 
