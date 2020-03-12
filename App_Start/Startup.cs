@@ -22,7 +22,7 @@ namespace Jindo_Capstone.App_Start
             //BackgroundJob.Enqueue(() => s.Execute());
             //Executes task bi-weekly on wensday at noon 
             //RecurringJob.AddOrUpdate("Send-TextMsg", () => SendTextMessageJob.Execute(), "* 12 */15 * 3" );
-            RecurringJob.AddOrUpdate("Send-TextMsg", () => SendTextMessageJob.Execute(), Cron.Hourly);
+            RecurringJob.AddOrUpdate("Send-TextMsg", () => SendTextMessageJob.Execute(), Cron.Minutely);
         }
         public void Configure(IAppBuilder app) {
 
@@ -31,7 +31,8 @@ namespace Jindo_Capstone.App_Start
         private IEnumerable<IDisposable> GetHangfireServers()
         {
             GlobalConfiguration.Configuration
-                .UseSqlServerStorage("Hangfire");
+                .UseSqlServerStorage("Jindo-Capstone")
+                .UseColouredConsoleLogProvider();
             yield return new BackgroundJobServer(); 
         }
     }
