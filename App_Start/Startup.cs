@@ -31,7 +31,7 @@ namespace Jindo_Capstone.App_Start
         private IEnumerable<IDisposable> GetHangfireServers()
         {
             GlobalConfiguration.Configuration
-                .UseSqlServerStorage("Jindo-Capstone")
+                .UseSqlServerStorage("Hangfire")
                 .UseColouredConsoleLogProvider();
             yield return new BackgroundJobServer(); 
         }
