@@ -1,0 +1,52 @@
+﻿
+@model Jindo_Capstone.Model.CustomerViewModel
+@{
+    ViewBag.Title = "Nifty Notif";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <div class="container">
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Message</th>
+                    <th scope="col">Contact Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">LastMessaged</th>
+
+                </tr>
+            </thead>
+
+            @if (Model != null)
+            {
+
+                for (var i = 0; i < Model.Customers.Count; i++)
+                {
+                    <tr id="@Model.Customers[i].CustID">
+                        <td><button onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button></td>
+                        <td>@Model.Customers[i].ContactName</td>
+                        <td>@Model.Customers[i].PhoneNumber</td>
+                        <td>@Model.Customers[i].ShippingAddress</td>
+                        <td>@(Model.Customers[i].LastMessaged?.ToString("MM/dd/yyyy h:mm tt")) </td>
+                    </tr>
+
+
+                }
+            }
+        </table>
+
+
+
+    </div>
+
+</body>
+</html>
