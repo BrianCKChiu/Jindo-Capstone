@@ -12,15 +12,17 @@ namespace Jindo_Capstone.Model
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public partial class Employee
     {
         [Display(Name = "User Name")]
-        [DataType(DataType.Text)]
+        [DataType(DataType.Text), Key]
         public string userName { get; set; }
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string password { get; set; }
+        [NotMapped]
         public string errorMessage { get; set; }
-    }
+    }   
 }
