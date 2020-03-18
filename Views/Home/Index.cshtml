@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container-fluid">
+    <h1>Hello!</h1>
+    <p>
+        Welcome back <u>@Html.Raw(HttpContext.Current.Session["userName"])</u>.
+    </p>
+</div>
+
