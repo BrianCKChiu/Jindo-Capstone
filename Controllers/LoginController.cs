@@ -36,7 +36,7 @@ namespace Jindo_Capstone.Controllers
                 else
                 {
                     Session["userName"] = x.userName.Trim();
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Customers");
                 }
             }
         }
