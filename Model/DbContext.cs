@@ -11,5 +11,7 @@ namespace Jindo_Capstone.Model
         public DBContext() : base("name=Jindo-Capstone") { }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Message> Messages { get; set; }
+
+        public DbSet<Employee> Employees { get; set; }
     }
 }

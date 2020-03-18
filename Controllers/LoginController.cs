@@ -17,7 +17,7 @@ namespace Jindo_Capstone.Controllers
         [HttpPost]
         public ActionResult Authorize(Employee x)
         {
-            using (cposEntities dbas = new cposEntities())
+            using (DBContext dbas = new DBContext())
             {
                 var checkRowCount = from emp in dbas.Employees
                                     where emp.userName.Equals(x.userName.Trim()) && emp.password.Equals(x.password.Trim())
