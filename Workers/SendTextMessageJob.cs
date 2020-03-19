@@ -30,18 +30,16 @@ namespace Jindo_Capstone.Workers
             {
                 Message msgObject = new Message()
                 {
-                    customer = customer,
+                    CustID = customer.CustID,
                     MessageContent = message,
                     Date = DateTime.Now
                 };
-
-                //TODO: update customer last sent message
-                System.Diagnostics.Debug.WriteLine(msgObject.customer.ContactName);
+                //System.Diagnostics.Debug.WriteLine(msgObject.Customer.ContactName);
                 customer.LastMessaged = DateTime.Now;
                 Customer cust = db.Customers.SingleOrDefault(c => customer.CustID == c.CustID);
                 cust.LastMessaged = DateTime.Now;
                 //twilioRestClient.SendMessage(msgObject);
-                //db.Messages.Add(msgObject);
+                db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
         }

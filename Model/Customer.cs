@@ -21,6 +21,8 @@ namespace Jindo_Capstone.Model
 
         [Required]
         public bool IsSubscribed { get; set; }
+        [DisplayFormat(NullDisplayText = "Never")]
         public DateTime? LastMessaged { get; set; }
+
     }
 }
