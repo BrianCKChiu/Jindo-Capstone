@@ -18,6 +18,7 @@ namespace Jindo_Capstone.Model
         [Required]
         public string MessageContent { get; set; }
         public int? CustID { get; set; }
+        [NotMapped]
         public virtual Customer Customer { get; set; }
     }
 }

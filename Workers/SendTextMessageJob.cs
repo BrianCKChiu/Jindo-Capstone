@@ -30,6 +30,7 @@ namespace Jindo_Capstone.Workers
             {
                 Message msgObject = new Message()
                 {
+                    Customer = customer,
                     CustID = customer.CustID,
                     MessageContent = message,
                     Date = DateTime.Now
