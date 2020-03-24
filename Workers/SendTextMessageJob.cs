@@ -38,7 +38,7 @@ namespace Jindo_Capstone.Workers
                 customer.LastMessaged = DateTime.Now;
                 Customer cust = db.Customers.SingleOrDefault(c => customer.CustID == c.CustID);
                 cust.LastMessaged = DateTime.Now;
-                //twilioRestClient.SendMessage(msgObject);
+                twilioRestClient.SendMessage(msgObject);
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
