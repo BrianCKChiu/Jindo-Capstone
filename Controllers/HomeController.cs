@@ -13,14 +13,14 @@ namespace Jindo_Capstone.Controllers
         {
             if (Session["userName"] == null)
             {
-                return RedirectToAction("../Login/Index");
+                return Logout();
             }
             return View();
         }
         public ActionResult Logout()
         {
             Session["userName"] = null;
-            return Index();
+            return RedirectToAction("Index", "Login");
 
         }
     }
