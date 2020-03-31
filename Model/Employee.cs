@@ -26,9 +26,5 @@ namespace Jindo_Capstone.Model
         public string password { get; set; }
         [NotMapped]
         public string errorMessage { get; set; }
-        public Employee(string userName, string empType) {
-            this.userName = userName;
-            this.empType = empType;
-        }
     }
 }
