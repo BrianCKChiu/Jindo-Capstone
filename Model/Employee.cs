@@ -16,11 +16,14 @@ namespace Jindo_Capstone.Model
 
     public partial class Employee
     {
-   
+        [Required]
+        [Display(Name = "Employee Type")]
         public string empType { get; set; }
+        [Required]
         [Display(Name = "User Name")]
         [DataType(DataType.Text), Key]
         public string userName { get; set; }
+        [Required]
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         public string password { get; set; }

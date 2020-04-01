@@ -36,7 +36,7 @@
                 @Html.DropDownListFor(model => model.empType,  new List<SelectListItem>{
                         new SelectListItem() {Text = "admin", Value="admin"},
                         new SelectListItem() {Text = "standard", Value="standard"}
-    }, "Select an Employee Type", new { @style = "width:400px", required = "required" })
+    }, "Select an Employee Type", new { @style = "width:400px"})
                 @Html.ValidationMessageFor(model => model.empType, "", new { @class = "text-danger" })
             </div>
         </div>
