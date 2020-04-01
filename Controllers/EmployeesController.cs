@@ -50,9 +50,20 @@ namespace Jindo_Capstone.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Employees.Add(employee);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var checkForEmployee = from emp in db.Employees
+                                    where emp.userName.Equals(employee.userName.Trim())
+                                    select emp;
+                int rowCount = checkForEmployee.ToList().Count();
+                if (rowCount == 0)
+                {
+                    db.Employees.Add(employee);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else {
+                    employee.errorMessage = "The user name you entered already exists for another employee. Please try again";
+                }
+               
             }
 
             return View(employee);
