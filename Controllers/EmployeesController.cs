@@ -112,6 +112,9 @@ namespace Jindo_Capstone.Controllers
             {
                 return HttpNotFound();
             }
+            else if (employee.userName.Equals(Session["userName"])) {
+                employee.errorMessage = "Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.";
+            }
             return View(employee);
         }
 
@@ -121,7 +124,10 @@ namespace Jindo_Capstone.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Employee employee = db.Employees.Find(id);
-            db.Employees.Remove(employee);
+            if (employee.userName.Equals(Session["userName"])) {
+                return Delete(id);
+            }
+             db.Employees.Remove(employee);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
