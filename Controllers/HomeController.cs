@@ -19,7 +19,7 @@ namespace Jindo_Capstone.Controllers
         }
         public ActionResult Logout()
         {
-            Session["userName"] = null;
+            Session.Clear();
             return RedirectToAction("Index", "Login");
 
         }

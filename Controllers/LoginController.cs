@@ -37,6 +37,7 @@ namespace Jindo_Capstone.Controllers
                 else
                 {
                     Session["userName"] = x.userName.Trim();
+                    Session["empType"]=checkRowCount.ToList().First().empType;
                     return RedirectToAction("Index", "Home");
                 }
             }
