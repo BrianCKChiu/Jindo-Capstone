@@ -38,6 +38,10 @@ namespace Jindo_Capstone.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
+            if (!(Session["empType"].Equals("admin")))
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
@@ -104,6 +108,9 @@ namespace Jindo_Capstone.Controllers
         // GET: Employees/Delete/5
         public ActionResult Delete(string id)
         {
+            if (!(Session["empType"].Equals("admin"))) {
+                return RedirectToAction("Index");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

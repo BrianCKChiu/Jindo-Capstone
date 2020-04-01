@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create") [<span class="text-warning">admin access required</span>]
 </p>
 <table class="table">
     <tr>
@@ -31,9 +31,9 @@
             @Html.DisplayFor(modelItem => item.empType)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.userName }) [<span class="text-warning">Currently disabled</span>]|
-            @Html.ActionLink("Details", "Details", new { id=item.userName }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.userName })
+            @Html.ActionLink("Edit", "Edit", new { id = item.userName }) [<span class="text-warning">Currently disabled</span>]|
+            @Html.ActionLink("Details", "Details", new { id = item.userName }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.userName }) [<span class="text-warning">admin access required</span>]
         </td>
     </tr>
 }
