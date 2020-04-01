@@ -72,6 +72,7 @@ namespace Jindo_Capstone.Controllers
         // GET: Employees/Edit/5
         public ActionResult Edit(string id)
         {
+            return RedirectToAction("Index");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
