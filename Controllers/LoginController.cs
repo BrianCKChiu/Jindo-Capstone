@@ -22,6 +22,7 @@ namespace Jindo_Capstone.Controllers
                 var checkRowCount = from emp in dbas.Employees
                                     where emp.userName.Equals(x.userName.Trim()) && emp.password.Equals(x.password.Trim())
                                     select emp;
+                
                 int rowCount = checkRowCount.ToList().Count();
                 if (rowCount == 0)
                 {
@@ -36,7 +37,8 @@ namespace Jindo_Capstone.Controllers
                 else
                 {
                     Session["userName"] = x.userName.Trim();
-                    return RedirectToAction("Index", "Customers");
+                    Session["empType"]=checkRowCount.ToList().First().empType;
+                    return RedirectToAction("Index", "Home");
                 }
             }
         }

@@ -11,17 +11,12 @@ namespace Jindo_Capstone.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            if (Session["userName"] == null)
-            {
-                return RedirectToAction("../Login/Index");
-            }
             return View();
         }
         public ActionResult Logout()
         {
-            Session["userName"] = null;
-            return Index();
-
+            Session.Clear();
+            return RedirectToAction("Index", "Login");
         }
     }
 }

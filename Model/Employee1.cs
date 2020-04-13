@@ -11,23 +11,11 @@ namespace Jindo_Capstone.Model
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
-    public partial class Employee
+    
+    public partial class Employee1
     {
-        [Required]
-        [Display(Name = "Employee Type")]
-        public string empType { get; set; }
-        [Required]
-        [Display(Name = "User Name")]
-        [DataType(DataType.Text), Key]
         public string userName { get; set; }
-        [Required]
-        [Display(Name = "Password")]
-        [DataType(DataType.Password)]
         public string password { get; set; }
-        [NotMapped]
-        public string errorMessage { get; set; }
+        public string empType { get; set; }
     }
 }
