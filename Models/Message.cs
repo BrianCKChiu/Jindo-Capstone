@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Jindo_Capstone.Model
+namespace Jindo_Capstone.Models
 {
     public class Message
     {

@@ -1,4 +1,4 @@
-﻿using Jindo_Capstone.Model;
+﻿using Jindo_Capstone.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

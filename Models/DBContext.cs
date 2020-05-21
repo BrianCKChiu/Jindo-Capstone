@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace Jindo_Capstone.Model
+namespace Jindo_Capstone.Models
 {
     public class DBContext : DbContext
     {
