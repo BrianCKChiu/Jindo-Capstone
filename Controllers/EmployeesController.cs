@@ -12,7 +12,7 @@ namespace Jindo_Capstone.Controllers
 {
     public class EmployeesController : Controller
     {
-        private cposEntities db = new cposEntities();
+        private DBContext db = new DBContext();
 
         // GET: Employees
         public ActionResult Index()
@@ -42,6 +42,7 @@ namespace Jindo_Capstone.Controllers
             {
                 return RedirectToAction("Index");
             }
+            
             return View();
         }
 
@@ -55,7 +56,7 @@ namespace Jindo_Capstone.Controllers
             if (ModelState.IsValid)
             {
                 var checkForEmployee = from emp in db.Employees
-                                    where emp.userName.Equals(employee.userName.Trim())
+                                    where emp.UserName.Equals(employee.UserName.Trim())
                                     select emp;
                 int rowCount = checkForEmployee.ToList().Count();
                 if (rowCount == 0)
@@ -65,7 +66,7 @@ namespace Jindo_Capstone.Controllers
                     return RedirectToAction("Index");
                 }
                 else {
-                    employee.errorMessage = "The user name you entered already exists for another employee. Please try again";
+                    //employee.errorMessage = "The user name you entered already exists for another employee. Please try again";
                 }
                
             }
@@ -120,8 +121,8 @@ namespace Jindo_Capstone.Controllers
             {
                 return HttpNotFound();
             }
-            else if (employee.userName.Equals(Session["userName"])) {
-                employee.errorMessage = "Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.";
+            else if (employee.UserName.Equals(Session["userName"])) {
+               // employee.errorMessage = "Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.";
             }
             return View(employee);
         }
@@ -132,7 +133,7 @@ namespace Jindo_Capstone.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Employee employee = db.Employees.Find(id);
-            if (employee.userName.Equals(Session["userName"])) {
+            if (employee.UserName.Equals(Session["userName"])) {
                 return Delete(id);
             }
              db.Employees.Remove(employee);

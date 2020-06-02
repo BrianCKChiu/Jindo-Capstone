@@ -1,4 +1,4 @@
-﻿using Jindo_Capstone.Model;
+﻿using Jindo_Capstone.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,24 +20,24 @@ namespace Jindo_Capstone.Controllers
             using (DBContext dbas = new DBContext())
             {
                 var checkRowCount = from emp in dbas.Employees
-                                    where emp.userName.Equals(x.userName.Trim()) && emp.password.Equals(x.password.Trim())
+                                    where emp.UserName.Equals(x.UserName.Trim()) && emp.Password.Equals(x.Password.Trim())
                                     select emp;
                 
                 int rowCount = checkRowCount.ToList().Count();
                 if (rowCount == 0)
                 {
-                    x.errorMessage = "Access denied. User name and password don't match";
+                    //x.errorMessage = "Access denied. User name and password don't match";
                     return View("Index", x);
                 }
                 else if (rowCount >= 2)
                 {
-                    x.errorMessage = "Programming error: there is more than record in the database with this user name and password.";
+                    //x.errorMessage = "Programming error: there is more than record in the database with this user name and password.";
                     return View("Index", x);
                 }
                 else
                 {
-                    Session["userName"] = x.userName.Trim();
-                    Session["empType"]=checkRowCount.ToList().First().empType;
+                    Session["userName"] = x.UserName.Trim();
+                    //Session["empType"]=checkRowCount.ToList().First().empType;
                     return RedirectToAction("Index", "Home");
                 }
             }

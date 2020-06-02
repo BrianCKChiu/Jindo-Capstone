@@ -5,7 +5,8 @@ using System.Web;
 
 namespace Jindo_Capstone.Models
 {
-    public enum MessageType
+    //change
+    public enum MessageTypes
     {
         Email = 0,
         TextMessage = 1

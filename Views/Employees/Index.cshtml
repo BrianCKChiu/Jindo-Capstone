@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Jindo_Capstone.Model.Employee>
+﻿@model IEnumerable<Jindo_Capstone.Models.Employee>
 
 @{
     ViewBag.Title = "Index";
@@ -21,11 +21,11 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model=>model.userName)
+            @Html.DisplayNameFor(model=>model.UserName)
         </th>
        
         <th>
-            @Html.DisplayNameFor(model => model.empType)
+            @Html.DisplayNameFor(model => model.EmpType)
         </th>
 
         <th></th>
@@ -34,18 +34,18 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.userName)
+            @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.empType)
+            @Html.DisplayFor(modelItem => item.EmpType)
         </td>
         <td>
             Edit [<span class="text-warning">Currently disabled</span>]|
-            @Html.ActionLink("Details", "Details", new { id = item.userName }) |
+            @Html.ActionLink("Details", "Details", new { id = item.UserName }) |
             @{
                 if (Session["empType"] != null && Session["empType"].Equals("admin"))
                 {
-                    @Html.ActionLink("Delete", "Delete", new { id = item.userName })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
                 }
                 else
                 {

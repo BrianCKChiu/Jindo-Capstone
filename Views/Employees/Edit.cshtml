@@ -1,4 +1,4 @@
-﻿@model Jindo_Capstone.Model.Employee
+﻿@model Jindo_Capstone.Models.Employee
 
 @{
     ViewBag.Title = "Edit";
@@ -14,7 +14,7 @@
         <h4>Employee</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.userName)
+        @Html.HiddenFor(model => model.UserName)
 
         <div class="form-group">
             @Html.LabelFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -27,8 +27,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.empType, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.empType, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.empType, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.EmpType, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmpType, "", new { @class = "text-danger" })
             </div>
         </div>
 

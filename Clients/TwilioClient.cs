@@ -1,4 +1,4 @@
-﻿using Jindo_Capstone.Model;
+﻿using Jindo_Capstone.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +6,13 @@ using System.Web;
 using System.Web.Configuration;
 using Twilio.Clients;
 using Twilio.Rest.Api.V2010.Account;
+using Twilio.AspNet.Common;
+using Twilio.TwiML;
+using Twilio.AspNet.Mvc;
 
 namespace Jindo_Capstone.Clients
 {
-    public class TwilioClient
+    public class TwilioClient : TwilioController
     {
         private readonly ITwilioRestClient _client;
         private readonly string _tokenAuth = WebConfigurationManager.AppSettings["AuthToken"];
@@ -34,5 +37,13 @@ namespace Jindo_Capstone.Clients
                     to: msg.Customer.PhoneNumber,
                     client: _client);
         }
+
+        public TwiMLResult Index(SmsRequest incomingMessage)
+        {
+            MessagingResponse resposne = new MessagingResponse();
+            resposne.Message("The copy cat says: " +incomingMessage.Body);
+            return TwiML(resposne);
+        }
+
     }
 }

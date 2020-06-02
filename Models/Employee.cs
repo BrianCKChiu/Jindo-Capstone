@@ -13,7 +13,7 @@ namespace Jindo_Capstone.Models
         [Required]
         public string Password { get; set; }
         [Required]
-        public string EmpType { get; set; }
+        public EmpType EmpType { get; set; }
     }
 
     public enum EmpType

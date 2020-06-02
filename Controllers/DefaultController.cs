@@ -11,6 +11,7 @@ namespace Jindo_Capstone.Controllers
         // GET: Default
         public ActionResult Index()
         {
+           
             return View();
         }
     }

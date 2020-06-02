@@ -17,8 +17,23 @@ namespace Jindo_Capstone.Models
         public DateTime Date { get; set; }
         [Required]
         public string MessageContent { get; set; }
+
+        //property needs to be renamed
+        [Required]
+        public MessageType Msg { get; set; }
+
         public int? CustID { get; set; }
         [NotMapped]
         public virtual Customer Customer { get; set; }
+
+    }
+
+    public enum MessageType
+    {
+        //incoming messages
+        Inbound,  Confirmation, Invalid,
+
+        //outgoing messages
+        Outbound, Request
     }
 }
