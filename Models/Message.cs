@@ -12,7 +12,6 @@ namespace Jindo_Capstone.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required, Key]
         public int MessageID { get; set; }
-
         [Required]
         public DateTime Date { get; set; }
         [Required]
@@ -21,11 +20,9 @@ namespace Jindo_Capstone.Models
         //property needs to be renamed
         [Required]
         public MessageType Msg { get; set; }
-
         public int? CustID { get; set; }
         [NotMapped]
         public virtual Customer Customer { get; set; }
-
     }
 
     public enum MessageType

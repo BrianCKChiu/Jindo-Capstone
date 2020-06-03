@@ -43,6 +43,9 @@ namespace Jindo_Capstone.Controllers
 
         public TwiMLResult Incoming(SmsRequest incomingMessage)
         {
+
+
+
             MessagingResponse orderMsg = new MessagingResponse();
             DBContext db = new DBContext();
             if(CheckValidCustomer(incomingMessage.From))
@@ -74,9 +77,10 @@ namespace Jindo_Capstone.Controllers
                     }
                 }
             }
+            MessagingResponse response = new MessagingResponse();
+            response.Message("Message recieved"); // temp
+            return TwiML(response);
 
-            MessagingResponse resposne = new MessagingResponse();
-            return TwiML(resposne);
         }
 
         public bool IsMessageValid(string message)

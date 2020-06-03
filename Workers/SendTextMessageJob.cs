@@ -15,11 +15,11 @@ namespace Jindo_Capstone.Workers
 
         public static void Execute()
         {
-            SubscribedCustomer().ForEach(c => MessageController.CreateMessage(c));
+            SubscribedCustomer().ForEach(c => MessageController.CreateReorderMessage(c));
         }
         public static void Execute(int id)
         {
-            SubscribedCustomer(id).ForEach(c => MessageController.CreateMessage(c));
+            SubscribedCustomer(id).ForEach(c => MessageController.CreateReorderMessage(c));
         }
 
 

@@ -18,11 +18,9 @@ namespace Jindo_Capstone.Models
         [Required]
         public string PhoneNumber { get; set; }
         public string ShippingAddress { get; set; }
-
         [Required]
         public bool IsSubscribed { get; set; }
         [DisplayFormat(NullDisplayText = "Never")]
         public DateTime? LastMessaged { get; set; }
-
     }
 }
