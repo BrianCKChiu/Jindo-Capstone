@@ -8,11 +8,12 @@ namespace Jindo_Capstone.Models
 {
     public class Employee
     {
+  
         [Required, Key]
-        public int Id { get; set; }
-        [Required]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
         public string Name { get; set; }
