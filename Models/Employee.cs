@@ -25,7 +25,7 @@ namespace Jindo_Capstone.Models
 
     public enum EmpType
     {
-        Admin, Employee
+        Standard, Admin
     }
 }
 

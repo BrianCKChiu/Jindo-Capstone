@@ -24,22 +24,24 @@ namespace Jindo_Capstone.Controllers
                                     select emp;
                 
                 int rowCount = checkRowCount.ToList().Count();
+       
                 if (rowCount == 0)
                 {
-                    //x.errorMessage = "Access denied. User name and password don't match";
+                    System.Diagnostics.Debug.WriteLine("Access denied. User name and password don't match");
                     return View("Index", x);
                 }
                 else if (rowCount >= 2)
                 {
-                    //x.errorMessage = "Programming error: there is more than record in the database with this user name and password.";
+                    System.Diagnostics.Debug.WriteLine("Programming error: there is more than record in the database with this user name and password.");
                     return View("Index", x);
                 }
                 else
                 {
                     Session["userName"] = x.UserName.Trim();
-                    //Session["empType"]=checkRowCount.ToList().First().empType;
+                    Session["empType"]=checkRowCount.ToList().First().EmpType;
                     return RedirectToAction("Index", "Home");
                 }
+                
             }
         }
     }
