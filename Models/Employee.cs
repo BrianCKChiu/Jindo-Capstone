@@ -16,10 +16,13 @@ namespace Jindo_Capstone.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
+        [Display(Name = "Full Name")]
         public string Name { get; set; }
         [Required]
+        [Display(Name = "Phone #")]
         public string PhoneNumber { get; set; }
         [Required]
+        [Display(Name = "Employee Type")]
         public EmpType EmpType { get; set; }
     }
 
