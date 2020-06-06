@@ -41,9 +41,10 @@
             @Html.DisplayFor(modelItem => item.EmpType)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserName }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UserName }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserName })
+            @Html.ActionLink("Edit", "Edit", new { id = item.UserName })  
+            [<span class="text-warning">We disabled this for our capstone presentation</span>]|
+            @Html.ActionLink("Details", "Details", new { id = item.UserName }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
         </td>
     </tr>
 }

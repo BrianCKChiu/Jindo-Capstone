@@ -11,7 +11,6 @@ namespace Jindo_Capstone.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            Session["empType"] ="admin";
             return View();
         }
         public ActionResult Logout()
