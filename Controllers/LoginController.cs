@@ -1,6 +1,7 @@
 ﻿using Jindo_Capstone.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,16 +25,17 @@ namespace Jindo_Capstone.Controllers
                 //                    select emp;
 
                 //int rowCount = checkRowCount.ToList().Count();
+                dbas.CreateLocalDB();
                 List<Employee> checkIfExists = dbas.CheckIfExists(x.UserName, x.Password);
                 int rowCount = checkIfExists.Count;
                 if (rowCount == 0)
                 {
-                    System.Diagnostics.Debug.WriteLine("Access denied. User name and password don't match");
+                    Debug.WriteLine("Access denied. User name and password don't match");
                     return View("Index",x);
                 }
                 else if (rowCount >= 2)
                 {
-                    System.Diagnostics.Debug.WriteLine("Programming error: there is more than record in the database with this user name and password.");
+                    Debug.WriteLine("Programming error: there is more than record in the database with this user name and password.");
                     return View("Index", x);
                 }
                 else

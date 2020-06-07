@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -38,6 +39,10 @@ namespace Jindo_Capstone.Controllers
         // GET: Employee/Create
         public ActionResult Create()
         {
+            if (!Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
+            {
+                return RedirectToAction("Index");//this is to block non admin employees
+            }
             return View();
         }
 
@@ -59,10 +64,10 @@ namespace Jindo_Capstone.Controllers
                 }
                 else if (rowCount==1)
                 {
-                    System.Diagnostics.Debug.WriteLine("Employee already exists with this user name. Unable to change.");
+                    Debug.WriteLine("Employee already exists with this user name. Unable to change.");
                 }
                 else {
-                    System.Diagnostics.Debug.WriteLine("Programming error: there is more than record in the database with this user name and password.");
+                    Debug.WriteLine("Programming error: there is more than record in the database with this user name and password.");
                 }
 
               
@@ -105,6 +110,10 @@ namespace Jindo_Capstone.Controllers
         // GET: Employee/Delete/5
         public ActionResult Delete(string id)
         {
+            if (!Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
+            {
+                return RedirectToAction("Index");//this is to block non admin employees
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -113,6 +122,10 @@ namespace Jindo_Capstone.Controllers
             if (employee == null)
             {
                 return HttpNotFound();
+            }
+            else if (employee.UserName.Equals(Session["userName"]))
+            {
+                Debug.WriteLine("Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.");
             }
             return View(employee);
         }
@@ -123,6 +136,10 @@ namespace Jindo_Capstone.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Employee employee = db.Employees.Find(id);
+            if (employee.UserName.Equals(Session["userName"]))
+            {
+                return Delete(id);
+            }
             db.Employees.Remove(employee);
             db.SaveChanges();
             return RedirectToAction("Index");
