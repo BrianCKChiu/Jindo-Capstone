@@ -11,6 +11,30 @@ namespace Jindo_Capstone.Models
         public DBContext() : base("name=Jindo-Capstone") 
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<DBContext>());
+
+            ////Add Test Data
+            List<Employee> initialData = new List<Employee>() { 
+                new Employee(){ 
+                    UserName="admin1",
+                    Password="karnataka",
+                    PhoneNumber="90555555555",
+                    EmpType=EmpType.Admin,
+                    Name="Jonny Admin"
+                }, 
+                new Employee(){
+                    UserName="standard1",
+                    Password="karnataka",
+                    PhoneNumber="9053333333",
+                    EmpType=EmpType.Standard,
+                    Name="Jonny Standard"
+                }
+            };
+            foreach (Employee x in initialData) {
+                if (CheckIfExists(x.UserName).Count == 0) {
+                    Employees.Add(x);
+                    SaveChanges();
+                }
+            }
         }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Message> Messages { get; set; }
