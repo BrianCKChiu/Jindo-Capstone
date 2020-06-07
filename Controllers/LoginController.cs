@@ -19,16 +19,17 @@ namespace Jindo_Capstone.Controllers
         {
             using (DBContext dbas = new DBContext())
             {
-                var checkRowCount = from emp in dbas.Employees
-                                    where emp.UserName.Equals(x.UserName.Trim()) && emp.Password.Equals(x.Password.Trim())
-                                    select emp;
-                
-                int rowCount = checkRowCount.ToList().Count();
-       
+                //  var checkRowCount = from emp in dbas.Employees
+                //                    where emp.UserName.Equals(x.UserName.Trim()) && emp.Password.Equals(x.Password.Trim())
+                //                    select emp;
+
+                //int rowCount = checkRowCount.ToList().Count();
+                List<Employee> checkIfExists = dbas.CheckIfExists(x.UserName, x.Password);
+                int rowCount = checkIfExists.Count;
                 if (rowCount == 0)
                 {
                     System.Diagnostics.Debug.WriteLine("Access denied. User name and password don't match");
-                    return View("Index", x);
+                    return View("Index",x);
                 }
                 else if (rowCount >= 2)
                 {
@@ -38,7 +39,7 @@ namespace Jindo_Capstone.Controllers
                 else
                 {
                     Session["userName"] = x.UserName.Trim();
-                    Session["empType"] = checkRowCount.ToList().First().EmpType;
+                    Session["empType"] = checkIfExists[0].EmpType;
                     return RedirectToAction("Index", "Home");
                 }
                 
