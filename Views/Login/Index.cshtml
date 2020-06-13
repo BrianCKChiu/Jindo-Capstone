@@ -16,15 +16,18 @@
     <div class="container">
         @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
         {
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.UserName)
-                @Html.EditorFor(model=>model.UserName)
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Password)
-                @Html.EditorFor(model=>model.Password)
-            </div>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName)
+            @Html.EditorFor(model => model.UserName)
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+             @Html.LabelFor(model => model.Password)
+             @Html.EditorFor(model => model.Password)
+             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+         </div>
             <input class="btn btn-success" type="submit" name="login" value="Log In" />
             <input class="btn btn-success" type="reset" name="reset" value="Reset" />
             
