@@ -64,10 +64,10 @@ namespace Jindo_Capstone.Controllers
                 }
                 else if (rowCount==1)
                 {
-                    Debug.WriteLine("Employee already exists with this user name. Unable to change.");
+                    ViewBag.ErrorMessage="Employee already exists with this user name. Unable to change.";
                 }
                 else {
-                    Debug.WriteLine("Programming error: there is more than record in the database with this user name and password.");
+                    ViewBag.ErrorMessage="Programming error: there is more than record in the database with this user name and password.";
                 }
 
               
@@ -110,7 +110,7 @@ namespace Jindo_Capstone.Controllers
         // GET: Employee/Delete/5
         public ActionResult Delete(string id)
         {
-            if (!Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
+            if (Session["userName"]==null ||!Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
             {
                 return RedirectToAction("Index");//this is to block non admin employees
             }
@@ -125,7 +125,7 @@ namespace Jindo_Capstone.Controllers
             }
             else if (employee.UserName.Equals(Session["userName"]))
             {
-                Debug.WriteLine("Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.");
+                ViewBag.ErrorMessage="Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.";
             }
             return View(employee);
         }
