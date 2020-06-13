@@ -36,7 +36,7 @@ namespace Jindo_Capstone.Controllers
                 else if (rowCount >= 2)
                 {
                     ViewBag.ErrorMessage = "Programming error: there is more than record in the database with this user name and password.";
-                    return View("Index", x);
+                    return View("Index");
                 }
                 else
                 {
