@@ -55,22 +55,30 @@ namespace Jindo_Capstone.Controllers
         {
             if (ModelState.IsValid)
             {
-                int rowCount = Employee.CheckIfExists(employee.UserName).Count;
-                if (rowCount == 0)
+                if (employee.Password.Contains(employee.UserName)){
+                    ViewBag.ErrorMessage = "Password cannot contain your user name. Please try again";
+                }
+                else if (employee.Password.Contains(employee.Name)) {
+                    ViewBag.ErrorMessage = "Password cannot contain your name. Please try again";
+                }
+                else
                 {
-                    db.Employees.Add(employee);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else if (rowCount==1)
-                {
-                    ViewBag.ErrorMessage="Employee already exists with this user name. Unable to change.";
-                }
-                else {
-                    ViewBag.ErrorMessage="Programming error: there is more than record in the database with this user name and password.";
-                }
-
-              
+                    int rowCount = Employee.CheckIfExists(employee.UserName).Count;
+                    if (rowCount == 0)
+                    {
+                        db.Employees.Add(employee);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else if (rowCount == 1)
+                    {
+                        ViewBag.ErrorMessage = "Employee already exists with this user name. Unable to change.";
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Programming error: there is more than record in the database with this user name and password.";
+                    }
+                }    
             }
 
             return View(employee);
