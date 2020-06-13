@@ -25,12 +25,12 @@ namespace Jindo_Capstone.Controllers
                 int rowCount = checkIfExists.Count;
                 if (rowCount == 0)
                 {
-                    Debug.WriteLine("Access denied. User name and password don't match");
-                    return View("Index",x);
+                    ViewBag.ErrorMessage = "Access denied. User name and password don't match";
+                    return View("Index", x);
                 }
                 else if (rowCount >= 2)
                 {
-                    Debug.WriteLine("Programming error: there is more than record in the database with this user name and password.");
+                    ViewBag.ErrorMessage = "Programming error: there is more than record in the database with this user name and password.";
                     return View("Index", x);
                 }
                 else
