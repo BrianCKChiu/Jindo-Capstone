@@ -55,7 +55,7 @@ namespace Jindo_Capstone.Controllers
         {
             if (ModelState.IsValid)
             {
-                int rowCount = db.CheckIfExists(employee.UserName).Count;
+                int rowCount = Employee.CheckIfExists(employee.UserName).Count;
                 if (rowCount == 0)
                 {
                     db.Employees.Add(employee);

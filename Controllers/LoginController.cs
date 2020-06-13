@@ -20,13 +20,8 @@ namespace Jindo_Capstone.Controllers
         {
             using (DBContext dbas = new DBContext())
             {
-                //  var checkRowCount = from emp in dbas.Employees
-                //                    where emp.UserName.Equals(x.UserName.Trim()) && emp.Password.Equals(x.Password.Trim())
-                //                    select emp;
-
-                //int rowCount = checkRowCount.ToList().Count();
                 dbas.CreateLocalDB();
-                List<Employee> checkIfExists = dbas.CheckIfExists(x.UserName, x.Password);
+                List<Employee> checkIfExists = Employee.CheckIfExists(x.UserName, x.Password);
                 int rowCount = checkIfExists.Count;
                 if (rowCount == 0)
                 {

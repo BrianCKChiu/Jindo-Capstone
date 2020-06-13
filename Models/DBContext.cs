@@ -14,21 +14,7 @@ namespace Jindo_Capstone.Models
         public DbSet<Message> Messages { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public List<Employee> CheckIfExists(string userName) {
-            List<Employee> y = new List<Employee>();
-            y= (from emp in this.Employees
-               where emp.UserName.Equals(userName.Trim())
-               select emp).ToList();
-            return y;
-        }
-        public List<Employee> CheckIfExists(string userName, string password)
-        {
-            List<Employee> y = new List<Employee>();
-            y = (from emp in this.Employees
-                 where emp.UserName.Equals(userName.Trim()) && emp.Password.Equals(password.Trim())
-                 select emp).ToList();
-            return y;
-        }
+  
         public void CreateLocalDB() {
             Database.SetInitializer(new CreateDatabaseIfNotExists<DBContext>());
 
@@ -37,22 +23,22 @@ namespace Jindo_Capstone.Models
                 List<Employee> initialData = new List<Employee>() {
                 new Employee(){
                     UserName="admin1",
-                    Password="karnataka",
-                    PhoneNumber="90555555555",
+                    Password="Snickerdoodles@$99",
+                    PhoneNumber="9051234568",
                     EmpType=EmpType.Admin,
                     Name="Jonny Admin"
                 },
                 new Employee(){
                     UserName="standard1",
-                    Password="karnataka",
-                    PhoneNumber="9053333333",
+                    Password="Snickerdoodles@$99",
+                    PhoneNumber="9051234567",
                     EmpType=EmpType.Standard,
                     Name="Jonny Standard"
                 }
             };
                 foreach (Employee x in initialData)
                 {
-                    if (CheckIfExists(x.UserName).Count == 0)
+                    if (Employee.CheckIfExists(x.UserName).Count == 0)
                     {
                         Employees.Add(x);
                         SaveChanges();
