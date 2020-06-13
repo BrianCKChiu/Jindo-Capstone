@@ -18,6 +18,11 @@ namespace Jindo_Capstone.Controllers
         [HttpPost]
         public ActionResult Authorize(Employee x)
         {
+            if (x.UserName == null || x.Password == null || x.Password.Trim().Length<1 || x.UserName.Trim().Length<1)
+            {
+                return View("Index");
+            }
+ 
             using (DBContext dbas = new DBContext())
             {
                 dbas.CreateLocalDB();
@@ -26,7 +31,7 @@ namespace Jindo_Capstone.Controllers
                 if (rowCount == 0)
                 {
                     ViewBag.ErrorMessage = "Access denied. User name and password don't match";
-                    return View("Index", x);
+                    return View("Index");
                 }
                 else if (rowCount >= 2)
                 {
