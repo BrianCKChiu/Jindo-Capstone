@@ -15,6 +15,7 @@ namespace Jindo_Capstone.Models
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]
+        [RegularExpression(@"(?=^.{8,16}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$", ErrorMessage = "Your password does not follow the password complexity rules")]
         public string Password { get; set; }
         [Required]
         [Display(Name = "Full Name")]

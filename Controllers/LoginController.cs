@@ -20,6 +20,7 @@ namespace Jindo_Capstone.Controllers
         {
             if (x.UserName == null || x.Password == null || x.Password.Trim().Length<1 || x.UserName.Trim().Length<1)
             {
+                ViewBag.ErrorMessage = "Both password and user name are required before continuing.";
                 return View("Index");
             }
  
