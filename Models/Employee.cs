@@ -21,6 +21,8 @@ namespace Jindo_Capstone.Models
         public string Name { get; set; }
         [Required]
         [Display(Name = "Phone #")]
+        [RegularExpression(@"^\d{10}$",
+         ErrorMessage = "Phone Numbers must be exactly 10 digits.")]
         public string PhoneNumber { get; set; }
         [Required]
         [Display(Name = "Employee Type")]
