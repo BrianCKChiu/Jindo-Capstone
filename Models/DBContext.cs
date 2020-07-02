@@ -23,14 +23,14 @@ namespace Jindo_Capstone.Models
                 List<Employee> initialData = new List<Employee>() {
                 new Employee(){
                     UserName="admin1",
-                    Password="Snickerdoodles@$99",
+                    Password="Stark@$99",
                     PhoneNumber="9051234568",
                     EmpType=EmpType.Admin,
                     Name="Jonny Admin"
                 },
                 new Employee(){
                     UserName="standard1",
-                    Password="Snickerdoodles@$99",
+                    Password="Stark@$99",
                     PhoneNumber="9051234567",
                     EmpType=EmpType.Standard,
                     Name="Jonny Standard"
@@ -41,6 +41,7 @@ namespace Jindo_Capstone.Models
                     if (Employee.CheckIfExists(x.UserName).Count == 0)
                     {
                         Employees.Add(x);
+
                         SaveChanges();
                     }
                 }
