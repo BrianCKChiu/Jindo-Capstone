@@ -1,6 +1,7 @@
-﻿using Jindo_Capstone.Model;
+﻿using Jindo_Capstone.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,29 +18,34 @@ namespace Jindo_Capstone.Controllers
         [HttpPost]
         public ActionResult Authorize(Employee x)
         {
+            if (x.UserName == null || x.Password == null || x.Password.Trim().Length<1 || x.UserName.Trim().Length<1)
+            {
+                ViewBag.ErrorMessage = "Both password and user name are required before continuing.";
+                return View("Index");
+            }
+ 
             using (DBContext dbas = new DBContext())
             {
-                var checkRowCount = from emp in dbas.Employees
-                                    where emp.userName.Equals(x.userName.Trim()) && emp.password.Equals(x.password.Trim())
-                                    select emp;
-                
-                int rowCount = checkRowCount.ToList().Count();
+                dbas.CreateLocalDB();
+                List<Employee> checkIfExists = Employee.CheckIfExists(x.UserName, x.Password);
+                int rowCount = checkIfExists.Count;
                 if (rowCount == 0)
                 {
-                    x.errorMessage = "Access denied. User name and password don't match";
-                    return View("Index", x);
+                    ViewBag.ErrorMessage = "Access denied. User name and password don't match";
+                    return View("Index");
                 }
                 else if (rowCount >= 2)
                 {
-                    x.errorMessage = "Programming error: there is more than record in the database with this user name and password.";
-                    return View("Index", x);
+                    ViewBag.ErrorMessage = "Programming error: there is more than record in the database with this user name and password.";
+                    return View("Index");
                 }
                 else
                 {
-                    Session["userName"] = x.userName.Trim();
-                    Session["empType"]=checkRowCount.ToList().First().empType;
+                    Session["userName"] = x.UserName.Trim();
+                    Session["empType"] = checkIfExists[0].EmpType;
                     return RedirectToAction("Index", "Home");
                 }
+                
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -10,17 +11,17 @@ using Jindo_Capstone.Models;
 
 namespace Jindo_Capstone.Controllers
 {
-    public class EmployeesController : Controller
+    public class EmployeeController : Controller
     {
         private DBContext db = new DBContext();
 
-        // GET: Employees
+        // GET: Employee
         public ActionResult Index()
         {
             return View(db.Employees.ToList());
         }
 
-        // GET: Employees/Details/5
+        // GET: Employee/Details/5
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -35,49 +36,57 @@ namespace Jindo_Capstone.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Create
+        // GET: Employee/Create
         public ActionResult Create()
         {
-            if (!(Session["empType"].Equals("admin")))
+            if (!Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index");//this is to block non admin employees
             }
-            
             return View();
         }
 
-        // POST: Employees/Create
+        // POST: Employee/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userName,password,empType")] Employee employee)
+        public ActionResult Create([Bind(Include = "UserName,Password,Name,PhoneNumber,EmpType")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                var checkForEmployee = from emp in db.Employees
-                                    where emp.UserName.Equals(employee.UserName.Trim())
-                                    select emp;
-                int rowCount = checkForEmployee.ToList().Count();
-                if (rowCount == 0)
+                if (employee.Password.Contains(employee.UserName)){
+                    ViewBag.ErrorMessage = "Password cannot contain your user name. Please try again";
+                }
+                else if (employee.Password.Contains(employee.Name)) {
+                    ViewBag.ErrorMessage = "Password cannot contain your name. Please try again";
+                }
+                else
                 {
-                    db.Employees.Add(employee);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                else {
-                    //employee.errorMessage = "The user name you entered already exists for another employee. Please try again";
-                }
-               
+                    int rowCount = Employee.CheckIfExists(employee.UserName).Count;
+                    if (rowCount == 0)
+                    {
+                        db.Employees.Add(employee);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else if (rowCount == 1)
+                    {
+                        ViewBag.ErrorMessage = "Employee already exists with this user name. Unable to change.";
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Programming error: there is more than record in the database with this user name and password.";
+                    }
+                }    
             }
 
             return View(employee);
         }
 
-        // GET: Employees/Edit/5
+        // GET: Employee/Edit/5
         public ActionResult Edit(string id)
         {
-            return RedirectToAction("Index");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -90,12 +99,12 @@ namespace Jindo_Capstone.Controllers
             return View(employee);
         }
 
-        // POST: Employees/Edit/5
+        // POST: Employee/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "userName,password,empType")] Employee employee)
+        public ActionResult Edit([Bind(Include = "UserName,Password,Name,PhoneNumber,EmpType")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -106,11 +115,12 @@ namespace Jindo_Capstone.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Delete/5
+        // GET: Employee/Delete/5
         public ActionResult Delete(string id)
         {
-            if (!(Session["empType"].Equals("admin"))) {
-                return RedirectToAction("Index");
+            if (Session["userName"]==null ||!Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
+            {
+                return RedirectToAction("Index");//this is to block non admin employees
             }
             if (id == null)
             {
@@ -121,22 +131,24 @@ namespace Jindo_Capstone.Controllers
             {
                 return HttpNotFound();
             }
-            else if (employee.UserName.Equals(Session["userName"])) {
-               // employee.errorMessage = "Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.";
+            else if (employee.UserName.Equals(Session["userName"]))
+            {
+                ViewBag.ErrorMessage="Users are not permitted to delete themselves from the application. Therefore the delete button will not work in this instance.";
             }
             return View(employee);
         }
 
-        // POST: Employees/Delete/5
+        // POST: Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
             Employee employee = db.Employees.Find(id);
-            if (employee.UserName.Equals(Session["userName"])) {
+            if (employee.UserName.Equals(Session["userName"]))
+            {
                 return Delete(id);
             }
-             db.Employees.Remove(employee);
+            db.Employees.Remove(employee);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

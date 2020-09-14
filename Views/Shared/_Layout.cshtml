@@ -11,7 +11,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @{ 
         if (Session["userName"] == null) { 
-              Response.Redirect("~/Home/Logout");
+             Response.Redirect("~/Home/Logout");
         }   
         }
 </head>
@@ -29,7 +29,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Log Out", "Logout", "Home")</li>
-                    <li>@Html.ActionLink("CRUD", "Index", "Employees")</li>
+                    <li>@Html.ActionLink("CRUD", "Index", "Employee")</li>
                     <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     <li><h4 class="text-success">@Session["userName"] [ @Session["empType"] ]</h4> </li>
                 </ul>

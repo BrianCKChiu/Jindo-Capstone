@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Jindo_Capstone.Model
+namespace Jindo_Capstone.Models
 {
     public class Customer
     {
@@ -18,11 +18,9 @@ namespace Jindo_Capstone.Model
         [Required]
         public string PhoneNumber { get; set; }
         public string ShippingAddress { get; set; }
-
         [Required]
         public bool IsSubscribed { get; set; }
         [DisplayFormat(NullDisplayText = "Never")]
         public DateTime? LastMessaged { get; set; }
-
     }
 }

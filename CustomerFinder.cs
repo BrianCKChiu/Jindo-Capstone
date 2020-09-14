@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Jindo_Capstone.Model;
+using Jindo_Capstone.Models;
 
 namespace Jindo_Capstone
 {

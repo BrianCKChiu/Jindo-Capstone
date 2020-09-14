@@ -8,26 +8,31 @@
 
 <p>
     @{
-        if (Session["empType"]!=null && Session["empType"].Equals("admin"))
+        if (Session["userName"] != null && Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
         {
             @Html.ActionLink("Create New", "Create")
         }
-        else { 
+        else
+        {
             @Html.Raw("Create [<span class=\"text-warning\">admin access required</span>]")
         }
     }
-  
+
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model=>model.UserName)
+            @Html.DisplayNameFor(model => model.UserName)
         </th>
-       
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.EmpType)
         </th>
-
         <th></th>
     </tr>
 
@@ -37,13 +42,20 @@
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.EmpType)
         </td>
         <td>
-            Edit [<span class="text-warning">Currently disabled</span>]|
+            @Html.ActionLink("Edit", "Edit", new { id = item.UserName })
+            [<span class="text-warning">We disabled this for our capstone presentation</span>]|
             @Html.ActionLink("Details", "Details", new { id = item.UserName }) |
             @{
-                if (Session["empType"] != null && Session["empType"].Equals("admin"))
+                if (Session["userName"] != null && Session["empType"].Equals(Jindo_Capstone.Models.EmpType.Admin))
                 {
                     @Html.ActionLink("Delete", "Delete", new { id = item.UserName })
                 }
@@ -52,6 +64,7 @@
                     @Html.Raw("Delete [<span class=\"text-warning\">admin access required</span>]")
                 }
             }
+
         </td>
     </tr>
 }

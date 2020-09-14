@@ -1,4 +1,4 @@
-﻿@model Jindo_Capstone.Model.Employee
+﻿@model Jindo_Capstone.Models.Employee
 @{
     Layout = null;
 }
@@ -16,19 +16,20 @@
     <div class="container">
         @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
         {
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.userName)
-                @Html.TextBoxFor(model => model.userName, new { @Value = "user123",@class = "form-control" })
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.password)
-                @Html.PasswordFor(model => model.password, new { @Value = "karnataka", @class = "form-control"  })
-            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName)
+            @Html.EditorFor(model => model.UserName)
+        </div>
+        <div class="form-group">
+             @Html.LabelFor(model => model.Password)
+             @Html.EditorFor(model => model.Password)
+         </div>
             <input class="btn btn-success" type="submit" name="login" value="Log In" />
             <input class="btn btn-success" type="reset" name="reset" value="Reset" />
-            <p> @Html.DisplayFor(model => model.errorMessage) </p>
+            
         }
+         <p class="text-danger">@ViewBag.ErrorMessage </p>
     </div>
+   
 </body>
 </html>
