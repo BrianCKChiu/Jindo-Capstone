@@ -13,7 +13,7 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerID)
+                @Html.DisplayNameFor(model => model.Customer.ContactName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Date)
@@ -30,10 +30,13 @@
     @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CustomerID)
+            @Html.DisplayFor(modelItem => item.Customer.ContactName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Date)
+            @{
+                string displayDate = item.Date.ToString("MM-dd-yyyy");
+            }
+            @Html.DisplayFor(modelItem => displayDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Status)
