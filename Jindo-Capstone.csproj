@@ -206,6 +206,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\OrdersViewController.cs" />
     <Compile Include="CustomerFinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -253,6 +254,12 @@
     <Content Include="Views\Employee\Details.cshtml" />
     <Content Include="Views\Employee\Edit.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\OrdersView\Create.cshtml" />
+    <Content Include="Views\OrdersView\Delete.cshtml" />
+    <Content Include="Views\OrdersView\Details.cshtml" />
+    <Content Include="Views\OrdersView\Edit.cshtml" />
+    <Content Include="Views\OrdersView\Index.cshtml" />
+    <Content Include="Views\OrdersView\hello.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
