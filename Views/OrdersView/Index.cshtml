@@ -72,6 +72,4 @@
     @Html.ActionLink("10", "Index", new { pageSize = 10, pageNumber = 1 }) |
     @Html.ActionLink("20", "Index", new { pageSize = 20, pageNumber = 1 }) |
     @Html.ActionLink("50", "Index", new { pageSize = 50, pageNumber = 1 })
-    <br />
-    <b>Page Number:</b>
     @Html.PagedListPager(Model, pageNumber => Url.Action("Index", "OrdersView", new { pageNumber, pageSize = Request.QueryString["pageSize"] }))
