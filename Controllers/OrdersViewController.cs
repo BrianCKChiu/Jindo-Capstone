@@ -7,7 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Jindo_Capstone.Models;
-
+using PagedList;
+using PagedList.Mvc;
 namespace Jindo_Capstone.Controllers
 {
     public class OrdersViewController : Controller
@@ -15,9 +16,9 @@ namespace Jindo_Capstone.Controllers
         private DBContext db = new DBContext();
 
         // GET: OrdersView
-        public ActionResult Index()
+        public ActionResult Index(int? pageNumber)
         {
-            return View(db.Orders.ToList());
+            return View(db.Orders.ToList().ToPagedList(pageNumber ?? 1,10));
         }
 
         // GET: OrdersView/Details/5
