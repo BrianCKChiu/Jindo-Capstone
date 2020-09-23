@@ -5,28 +5,29 @@
 }
 
 <h2>Index</h2>
+@*
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+  *@
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderAmount)
+            </th>
+            <th></th>
+        </tr>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomerID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderAmount)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.CustomerID)
@@ -40,11 +41,16 @@
         <td>
             @Html.DisplayFor(modelItem => item.OrderAmount)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.InvoiceNumber }) |
-            @Html.ActionLink("Details", "Details", new { id=item.InvoiceNumber }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.InvoiceNumber })
+
+        @*
+            This code might is to navigate to the Delete, Edit, Details page. Might be useful in the future but I am commenting it out for now
+            <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.InvoiceNumber }) |
+        @Html.ActionLink("Details", "Details", new { id = item.InvoiceNumber }) |
+        @Html.ActionLink("Delete", "Delete", new { id=item.InvoiceNumber })
         </td>
+        *@
+
     </tr>
 }
 
