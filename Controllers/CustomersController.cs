@@ -31,7 +31,7 @@ namespace Jindo_Capstone.Controllers
         public ActionResult Send(int id)
         {
             SendTextMessageJob.Execute(id);
-            return Redirect("~/Customers/Index");
+            return Redirect("~/Customers/");
         }
     }
 }

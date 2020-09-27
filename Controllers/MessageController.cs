@@ -12,49 +12,39 @@ namespace Jindo_Capstone.Controllers
     public class MessageController : ApiController
     {
         private const string TxtMsgTempalte = "Hello {0}. This is an automated text message from CPOS. Would you like us to send a box of paper rolls? Type YES if you want to start the ordering process.";
-        //private static SmsController Messenger = new SmsController();
 
-            //RENAME
         public static void CreateReorderMessage(Customer customer)
         {
             String message = String.Format(TxtMsgTempalte, customer.ContactName);
-            CreateOutgoingMessage(customer, message, MessageType.Request);
+            CreateMessage(customer, message);
         }
 
         //TODO: Change method name
-        public static void CreateOutgoingMessage(Customer customer, string message, MessageType msgType)
+        public static void CreateMessage(Customer customer, string message)
         {
-            SmsController Messenger = new SmsController();
             var twilioRestClient = new TwilioClient();
             using (DBContext db = new DBContext())
             {
                 Message msgObject = new Message()
-                    {
-                        Customer = customer,
-                        CustID = customer.CustID,
-                        MessageContent = message,
-                        Date = DateTime.Now,
-                        Type = msgType,
-                        MessageSID = null
-                    };
-
-                //updates last sent message
+                {
+                    Customer = customer,
+                    CustID = customer.CustID,
+                    MessageContent = message,
+                    Date = DateTime.Now,
+                    Msg = MessageType.Outbound
+                };
+                //System.Diagnostics.Debug.WriteLine(msgObject.Customer.ContactName);
                 customer.LastMessaged = DateTime.Now;
                 Customer cust = db.Customers.SingleOrDefault(c => customer.CustID == c.CustID);
                 cust.LastMessaged = DateTime.Now;
-                //
-                if (msgType == MessageType.Request)
-                {
-                    String msgSID = Messenger.SendMessage(msgObject); //commentted out for now BUT works
-                    msgObject.MessageSID = msgSID;
-                }
+                //SmsController.SendMessage(msgObject);
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
         }
 
 
-        public static void AddIncomingMessage(Customer customer, string messageBody, string msgSID)
+        public static void AddIncomingMessage(Customer customer, string messageBody)
         {
             using (DBContext db = new DBContext())
             {
@@ -62,12 +52,10 @@ namespace Jindo_Capstone.Controllers
                 {
                     CustID = customer.CustID,
                     Date = DateTime.Now,
-                    Type = MessageType.Inbound,
-                    MessageContent = messageBody,
-                    MessageSID = msgSID
+                    Msg = MessageType.Inbound,
+                    MessageContent = messageBody
                 };
-                db.Messages.Add(msgObj);
-                db.SaveChanges();
+                     db.Messages.Add(msgObj);
             }
         }
 
@@ -76,7 +64,6 @@ namespace Jindo_Capstone.Controllers
             using (DBContext db = new DBContext())
             {
                 db.Messages.Add(msgObj);
-                db.SaveChanges();
             }
         }
 
