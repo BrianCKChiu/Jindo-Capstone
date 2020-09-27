@@ -23,30 +23,31 @@ namespace Jindo_Capstone.Controllers
                 ViewBag.ErrorMessage = "Both password and user name are required before continuing.";
                 return View("Index");
             }
- 
-            using (DBContext dbas = new DBContext())
+            try
             {
-                dbas.CreateLocalDB();
-                List<Employee> checkIfExists = Employee.CheckIfExists(x.UserName, x.Password);
-                int rowCount = checkIfExists.Count;
-                if (rowCount == 0)
+                //checks if credentials are valid
+                if(EmployeesController.CheckCredentials(x.UserName, x.Password))
                 {
-                    ViewBag.ErrorMessage = "Access denied. User name and password don't match";
-                    return View("Index");
-                }
-                else if (rowCount >= 2)
-                {
-                    ViewBag.ErrorMessage = "Programming error: there is more than record in the database with this user name and password.";
-                    return View("Index");
+                    using (DBContext db = new DBContext())
+                    {
+                        Session["userName"] = x.UserName.Trim();
+                        Session["empType"] = EmployeesController.GetEmployeeType(x.UserName);
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
-                    Session["userName"] = x.UserName.Trim();
-                    Session["empType"] = checkIfExists[0].EmpType;
-                    return RedirectToAction("Index", "Home");
+                    throw new NullReferenceException("Something went wrong! Please contact support");
                 }
-                
+
+            } 
+            //catches any errors retrieving or processing employee data from the database
+            catch(NullReferenceException e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                return View("Index");
             }
+
         }
     }
 }

@@ -24,65 +24,85 @@ namespace Jindo_Capstone.Controllers
         public SmsController()
         {
             _client = new TwilioRestClient(_accountSid, _tokenAuth);
-
         }
         public SmsController(TwilioRestClient client)
         {
             _client = client;
         }
-
-        public void SendMessage(Message msg)
+        /// <summary>
+        /// Sends a outgoing message 
+        /// </summary>
+        /// <param name="msg">message that needs to be sent</param>
+        /// <returns>Message SID that Twilio has created for the message</returns>
+        public string SendMessage(Message msg)
         {
             //sends message
-            MessageResource.Create(
+            var msgObject = MessageResource.Create(
                 body: msg.MessageContent,
                 from: _twilioNumber,
                 to: msg.Customer.PhoneNumber,
                 client: _client);
+            //returns unique ID of msg
+            return msgObject.Sid;
         }
 
+
+        //[Sms/Incoming]
+        /// <summary>
+        /// Process incomming messages received 
+        /// </summary>
+        /// <param name="incomingMessage">Incoming Message object</param>
+        /// <returns>Returns a response text message to the user</returns>
+        [HttpPost]
         public TwiMLResult Incoming(SmsRequest incomingMessage)
         {
-
-
-
-            MessagingResponse orderMsg = new MessagingResponse();
+            
+            var response = new MessagingResponse();
             DBContext db = new DBContext();
-            if(CheckValidCustomer(incomingMessage.From))
+           
+            if (CheckValidCustomer(incomingMessage.From))
             {
-                var customer = (from c in db.Customers where incomingMessage.From == c.PhoneNumber select c).Single();
-                //add error checking if null 
-                MessageController.AddIncomingMessage(customer, incomingMessage.Body);
+                Customer customer = (from c in db.Customers where incomingMessage.From.Trim().Equals(c.PhoneNumber) select c).Single();
 
-                //selects the latest message sent/recieved by the customer
-                var latestMsg = (from m in db.Messages where m.CustID == customer.CustID orderby m.Date descending select m).Single(); 
+                var customerID = customer.CustID;
+                MessageController.AddIncomingMessage(customer, incomingMessage.Body, incomingMessage.SmsSid);
+                var latestMsg = (from m in db.Messages where m.CustID.Equals(customerID) orderby m.Date descending select m).FirstOrDefault();
 
-                if(latestMsg.Msg == MessageType.Request)
+                if (latestMsg != null)
                 {
-                    if (IsMessageValid(incomingMessage.Body))
+                    if (latestMsg.Type == MessageType.Request || latestMsg.Type == MessageType.Invalid || latestMsg.Type == MessageType.Inbound)
                     {
-                        Order order = OrderController.CreateOrder(customer);
-                        String messageText = "Success! Your Order has been placed \n Your invoice number is: " + order.InvoiceNumber;
-                        orderMsg.Message(messageText);
-                        MessageController.CreateMessage(customer, messageText);
-                        return TwiML(orderMsg);
-                    }
-                    else
-                    {
-                        //Error Message asking users to resend another message
-                        String messageText = "Invalid Message, Blah blah blah";
-                        orderMsg.Message(messageText);
-                        MessageController.CreateMessage(customer, messageText);
-                        return TwiML(orderMsg);
+                        String messageText;
+                        if (IsMessageValid(incomingMessage.Body))
+                        {
+                            Order order = OrderController.CreateOrder(customer);
+                            messageText = "Success! Your Order has been placed \n Your invoice number is: " + order.InvoiceNumber;
+                            response.Message(messageText);
+                            MessageController.CreateOutgoingMessage(customer, messageText, MessageType.Confirmation);
+                            return TwiML(response);
+                        }
+                        else
+                        {
+                            //Error Message asking users to resend another message
+                            messageText = "Invalid Message, Blah blah blah";
+                            response.Message(messageText);
+                            MessageController.CreateOutgoingMessage(customer, messageText, MessageType.Invalid);
+                            return TwiML(response);
+                        }
                     }
                 }
             }
-            MessagingResponse response = new MessagingResponse();
-            response.Message("Message recieved"); // temp
-            return TwiML(response);
 
+            //Return an error msg if message came from a user not in the table
+            response.Message(""); 
+            return TwiML(response);
         }
 
+        /// <summary>
+        /// Checks if customer's reponse is a valid response to order a new set of paper roll
+        /// </summary>
+        /// <param name="message">Customer's response message</param>
+        /// <returns></returns>
         public bool IsMessageValid(string message)
         {
             string unformattedMsg = (message.Trim()).ToLower();
@@ -98,14 +118,17 @@ namespace Jindo_Capstone.Controllers
             }
         }
 
-        //wip
+        /// <summary>
+        /// Checks if the phone number is in the customer table and sees if they are subsscribed
+        /// </summary>
+        /// <param name="phoneNumber">Phone number that sent the message</param>
+        /// <returns>If its a valid user</returns>
         public bool CheckValidCustomer(string phoneNumber)
         {
             //TODO: check if phone number is valid format
-
             using (DBContext db = new DBContext())
             {
-                var isValid = (from c in db.Customers where phoneNumber.Equals(c.PhoneNumber) select c).FirstOrDefault();
+                var isValid = (from c in db.Customers where phoneNumber.Equals(c.PhoneNumber) && c.IsSubscribed == true select c).FirstOrDefault();
                 if (isValid == null)
                 {
                     return false;

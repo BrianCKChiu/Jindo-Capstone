@@ -200,11 +200,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
-    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\MessageStatusController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="CustomerFinder.cs" />
     <Compile Include="Global.asax.cs">
@@ -215,13 +215,12 @@
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Message.cs" />
-    <Compile Include="Models\MessageType.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\TestModel.cs" />
     <Compile Include="Controllers\SmsController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Clients\TwilioClient.cs" />
     <Compile Include="Security\Encrypt.cs" />
+    <Compile Include="TwilioClient.cs" />
     <Compile Include="Workers\SendTextMessageJob.cs" />
   </ItemGroup>
   <ItemGroup>
