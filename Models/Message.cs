@@ -18,8 +18,9 @@ namespace Jindo_Capstone.Models
         public string MessageContent { get; set; }
 
         //property needs to be renamed
-        [Required]
-        public MessageType Msg { get; set; }
+        [Required, Column("MessageType")]
+        public MessageType Type { get; set; }
+        public string MessageSID { get; set;}
         public int? CustID { get; set; }
         [NotMapped]
         public virtual Customer Customer { get; set; }
@@ -28,9 +29,9 @@ namespace Jindo_Capstone.Models
     public enum MessageType
     {
         //incoming messages
-        Inbound,  Confirmation, Invalid,
+        Inbound = 0,  Confirmation = 2, Invalid = 4, 
 
         //outgoing messages
-        Outbound, Request
+        Outbound = 1, Request = 3, Error = 5
     }
 }

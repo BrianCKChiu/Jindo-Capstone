@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using Jindo_Capstone.Models;
+using Twilio.Rest.Studio.V2.Flow;
 
 namespace Jindo_Capstone.Controllers
 {
@@ -139,6 +141,64 @@ namespace Jindo_Capstone.Controllers
              db.Employees.Remove(employee);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        /*
+        * <summary> 
+        *   Queries for an employee in the database
+        * </summary>
+        * <param name="username">employee's username</param>
+        * <returns>
+        *   Employee's data or a null object
+        * </returns>
+        */
+        public static Employee GetEmployee(string username) 
+        {
+            DBContext db = new DBContext();
+            List<Employee> employeeList = 
+                (from e in db.Employees
+                 where e.UserName.Equals(username.Trim())
+                 select e).ToList();
+
+            //checks if there's more than one employee found
+            if (employeeList.Count > 1)
+            {
+                //todo: add a log statement that indicates issue
+                return null;
+            }
+            //if no employee is found
+            else if(employeeList.Count <= 0)
+            {
+                //todo: add a log statement that indicates issue
+                return null;
+            }
+            Employee emp = employeeList.Single();
+            return emp;
+        }
+
+        public static bool CheckCredentials(string username, string password)
+        {
+            Employee emp = GetEmployee(username);
+            if(emp == null)
+            {
+                throw new NullReferenceException("Invalid Username/Password");
+            }
+            /*
+             * decode password
+             */
+
+            //check if password is valid
+            if(emp.Password != password)
+            {
+                throw new NullReferenceException("Invalid Username/Password");
+            }
+            return true;
+        }
+
+        public static EmpType GetEmployeeType(string username)
+        {
+            DBContext db = new DBContext();
+            return (from e in db.Employees where e.UserName == username select e.Type).Single();
         }
 
         protected override void Dispose(bool disposing)
