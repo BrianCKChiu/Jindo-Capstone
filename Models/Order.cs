@@ -11,14 +11,14 @@ namespace Jindo_Capstone.Models
     {
         [DisplayName("Invoice Number")]
         [Required, Key]
-        public int InvoiceNumber { get; set; }
+        public int OrderID { get; set; }
         [Required]
-        public int CustomerID { get; set; }
+        public int CustID { get; set; }
         public Customer Customer { 
             get
             {
                 DBContext db = new DBContext();
-                return (from c in db.Customers where CustomerID == c.CustID select c).Single();
+                return (from c in db.Customers where CustID == c.CustID select c).Single();
             } 
         }
         [Required, DisplayName("Order Date")]

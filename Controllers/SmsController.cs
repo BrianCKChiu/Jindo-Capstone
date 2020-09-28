@@ -66,7 +66,7 @@ namespace Jindo_Capstone.Controllers
 
                 var customerID = customer.CustID;
                 MessageController.AddIncomingMessage(customer, incomingMessage.Body, incomingMessage.SmsSid);
-                var latestMsg = (from m in db.Messages where m.CustID.Equals(customerID) orderby m.Date descending select m).FirstOrDefault();
+                var latestMsg = (from m in db.Messages where m.CustID == customerID orderby m.Date descending select m).FirstOrDefault();
 
                 if (latestMsg != null)
                 {
@@ -76,7 +76,7 @@ namespace Jindo_Capstone.Controllers
                         if (IsMessageValid(incomingMessage.Body))
                         {
                             Order order = OrderController.CreateOrder(customer);
-                            messageText = "Success! Your Order has been placed \n Your invoice number is: " + order.InvoiceNumber;
+                            messageText = "Success! Your Order has been placed \n Your invoice number is: " + order.OrderID;
                             response.Message(messageText);
                             MessageController.CreateOutgoingMessage(customer, messageText, MessageType.Confirmation);
                             return TwiML(response);
