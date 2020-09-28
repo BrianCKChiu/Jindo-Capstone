@@ -26,6 +26,7 @@ namespace Jindo_Capstone.Controllers
             };
 
             db.Orders.Add(order);
+            db.SaveChanges();
             return order;
         }
 
