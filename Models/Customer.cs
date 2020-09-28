@@ -14,6 +14,7 @@ namespace Jindo_Capstone.Models
         [Required, Key]
         public int CustID { get; set; }
         [Required]
+        [Display(Name = "Contact Name")]
         public string ContactName { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
