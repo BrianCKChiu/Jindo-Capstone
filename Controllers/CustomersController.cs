@@ -33,5 +33,27 @@ namespace Jindo_Capstone.Controllers
             SendTextMessageJob.Execute(id);
             return Redirect("~/Customers/Index");
         }
+
+        /// <summary>
+        /// Checks if the phone number is in the customer table and sees if they are subsscribed
+        /// </summary>
+        /// <param name="phoneNumber">Phone number that sent the message</param>
+        /// <returns>If its a valid user</returns>
+        public static bool CheckValidCustomer(string phoneNumber)
+        {
+            //TODO: check if phone number is valid format
+            using (DBContext db = new DBContext())
+            {
+                var isValid = (from c in db.Customers where phoneNumber.Equals(c.PhoneNumber) && c.IsSubscribed == true select c).FirstOrDefault();
+                if (isValid == null)
+                {
+                    return false;
+                }
+                else
+                    return true;
+            }
+        }
     }
+
+
 }
