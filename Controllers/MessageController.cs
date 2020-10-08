@@ -12,21 +12,28 @@ namespace Jindo_Capstone.Controllers
 {
     public class MessageController : ApiController
     {
-        private const string TxtMsgTempalte = "Hello {0}. This is an automated text message from CPOS. Would you like us to send a box of paper rolls? Type YES if you want to start the ordering process.";
-        //private static SmsController Messenger = new SmsController();
-
-            //RENAME
+        /// <summary>
+        /// Creates a re-order message to a customer
+        /// </summary>
+        /// <param name="customer">the recipient that the message is sent to</param>
         public static void CreateReorderMessage(Customer customer)
         {
-            String message = String.Format(TxtMsgTempalte, customer.ContactName);
+            String message = String.Format(WebConfigurationManager.AppSettings["ReorderMsg"], customer.ContactName);
             CreateOutgoingMessage(customer, message, MessageType.Request);
         }
 
-        //TODO: Change method name
+        /// <summary>
+        /// Creates an outgoing text message
+        /// </summary>
+        /// <param name="customer">Recipient that the message is sent</param>
+        /// <param name="message">Message body</param>
+        /// <param name="msgType">The type of message </param>
         public static void CreateOutgoingMessage(Customer customer, string message, MessageType msgType)
         {
             SmsController Messenger = new SmsController();
             var twilioRestClient = new TwilioClient();
+
+            //logs the message to the database
             using (DBContext db = new DBContext())
             {
                 Message msgObject = new Message()
@@ -39,22 +46,28 @@ namespace Jindo_Capstone.Controllers
                         MessageSID = null
                     };
 
-                //updates last sent message
+                //updates last sent message to the recipient
                 customer.LastMessaged = DateTime.Now;
                 Customer cust = db.Customers.SingleOrDefault(c => customer.CustID == c.CustID);
                 cust.LastMessaged = DateTime.Now;
-                //
+    
                 if (msgType == MessageType.Request)
                 {
-                    String msgSID = Messenger.SendMessage(msgObject); //commentted out for now BUT works
+                    String msgSID = Messenger.SendMessage(msgObject); 
                     msgObject.MessageSID = msgSID;
                 }
+
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
         }
 
-
+        /// <summary>
+        /// Saves an incoming message received by the Twilio number
+        /// </summary>
+        /// <param name="customer">The customer who sent the message</param>
+        /// <param name="messageBody">the message in the text message</param>
+        /// <param name="msgSID">Message ID</param>
         public static void AddIncomingMessage(Customer customer, string messageBody, string msgSID)
         {
             using (DBContext db = new DBContext())
@@ -71,15 +84,12 @@ namespace Jindo_Capstone.Controllers
                 db.SaveChanges();
             }
         }
-
-        public void AddMessage(Message msgObj)
-        {
-            using (DBContext db = new DBContext())
-            {
-                db.Messages.Add(msgObj);
-                db.SaveChanges();
-            }
-        }
+        /// <summary>
+        /// Determines what type of incoming message received by Twilio 
+        /// </summary>
+        /// <param name="message">Message the user has sent</param>
+        /// <param name="customerID">The customer who've sent the message</param>
+        /// <returns>Type of message</returns>
         public static MessageType DetermineResponse(String message, int customerID)
         {
 
@@ -88,10 +98,8 @@ namespace Jindo_Capstone.Controllers
             var latestMsg = (from m in db.Messages where m.CustID == customerID orderby m.Date descending select m).FirstOrDefault();
             var formatedMsg = FormatMsg(message);
 
-
             if (latestMsg != null)
             {
-
                 if (latestMsg.Type == MessageType.Request || latestMsg.Type == MessageType.Invalid || latestMsg.Type == MessageType.Inbound)
                 {
                     if (IsTextValid(formatedMsg))
@@ -131,7 +139,11 @@ namespace Jindo_Capstone.Controllers
                     return false;
             }
         }
-
+        /// <summary>
+        /// Formates message to all lowercase
+        /// </summary>
+        /// <param name="message">String that needs to be formated</param>
+        /// <returns>Formated string</returns>
         private static string FormatMsg(string message)
         {
             return message.Trim().ToLower();
