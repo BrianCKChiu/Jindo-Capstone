@@ -44,21 +44,20 @@ namespace Jindo_Capstone.Controllers
                 from: _twilioNumber,
                 to: msg.Customer.PhoneNumber,
                 client: _client);
-            //returns unique ID of msg
+
             return msgObject.Sid;
         }
 
 
-        //[Sms/Incoming]
         /// <summary>
         /// Process incomming messages received and returns a response to the sender
+        /// [Sms/Incoming]
         /// </summary>
         /// <param name="incomingMessage">Incoming Message object</param>
         /// <returns>Returns a response text message to the user</returns>
         [HttpPost]
         public TwiMLResult Incoming(SmsRequest incomingMessage)
         {
-            
             var response = new MessagingResponse();
             DBContext db = new DBContext();
            
@@ -75,10 +74,10 @@ namespace Jindo_Capstone.Controllers
                 {
                     case MessageType.Confirmation:
                         Order order = OrderController.CreateOrder(customer);
-                        response.Message(WebConfigurationManager.AppSettings["OrderConfirmation"] + order.OrderID);
+                        response.Message(WebConfigurationManager.AppSettings["Confirmation"] + order.OrderID);
                         break;
                     case MessageType.Invalid:
-                        response.Message(WebConfigurationManager.AppSettings["InvalidResponse"]);
+                        response.Message(WebConfigurationManager.AppSettings["Invalid"]);
                         break;
                     case MessageType.Error:
                         response.Message(WebConfigurationManager.AppSettings["Error"]);
@@ -90,7 +89,7 @@ namespace Jindo_Capstone.Controllers
                         response.Message(WebConfigurationManager.AppSettings["Error"]);
                         break;
                 }
-                MessageController.CreateOutgoingMessage(customer, messageBody, IncomingMessagetype);
+                MessageController.CreateOutgoingMessage(customer, WebConfigurationManager.AppSettings[IncomingMessagetype.ToString()], IncomingMessagetype);
                 return TwiML(response);
             } 
             else
@@ -99,15 +98,6 @@ namespace Jindo_Capstone.Controllers
                 response.Message(WebConfigurationManager.AppSettings["UnknowNumber"]);
                 return TwiML(response);
             }
-
-           
-
         }
-
-
-
-
-
-
     }
 }

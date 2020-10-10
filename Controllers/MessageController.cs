@@ -47,10 +47,8 @@ namespace Jindo_Capstone.Controllers
                     };
 
                 //updates last sent message to the recipient
-                customer.LastMessaged = DateTime.Now;
-                Customer cust = db.Customers.SingleOrDefault(c => customer.CustID == c.CustID);
-                cust.LastMessaged = DateTime.Now;
-    
+                UpdateLastMesseged(customer);
+
                 if (msgType == MessageType.Request)
                 {
                     String msgSID = Messenger.SendMessage(msgObject); 
@@ -58,6 +56,19 @@ namespace Jindo_Capstone.Controllers
                 }
 
                 db.Messages.Add(msgObject);
+                db.SaveChanges();
+            }
+        }
+        /// <summary>
+        /// Updates last received/sent message of a recipient
+        /// </summary>
+        /// <param name="cust">recipient that set/recieved a message</param>
+        private static void UpdateLastMesseged(Customer cust)
+        {
+            using (DBContext db = new DBContext())
+            {
+                Customer customer = db.Customers.SingleOrDefault(c => cust.CustID == c.CustID);
+                customer.LastMessaged = DateTime.Now;
                 db.SaveChanges();
             }
         }
