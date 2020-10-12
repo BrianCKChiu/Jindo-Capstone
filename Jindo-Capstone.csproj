@@ -211,7 +211,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
-    <Compile Include="Controllers\MessageStatusController.cs" />
+    <Compile Include="Controllers\UpdateController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="CustomerFinder.cs" />
     <Compile Include="Global.asax.cs">

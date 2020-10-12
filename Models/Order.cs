@@ -18,7 +18,7 @@ namespace Jindo_Capstone.Models
             get
             {
                 DBContext db = new DBContext();
-                return (from c in db.Customers where CustID == c.CustID select c).Single();
+                return (from c in db.Customers where CustID == c.CustID select c).SingleOrDefault();
             } 
         }
         [Required, DisplayName("Order Date")]
@@ -28,11 +28,13 @@ namespace Jindo_Capstone.Models
 
         [Required]
         public int OrderAmount { get; set; }
+
+        public String TrackingNumber { get; set; }
     }
 
     public enum OrderStatus
     {
-        //WIP
-        Shipped, NotShipped
+
+        Shipped, NotShipped, Cancelled, Delayed 
     }
 }

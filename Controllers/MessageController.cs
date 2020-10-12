@@ -31,7 +31,6 @@ namespace Jindo_Capstone.Controllers
         public static void CreateOutgoingMessage(Customer customer, string message, MessageType msgType)
         {
             SmsController Messenger = new SmsController();
-            var twilioRestClient = new TwilioClient();
 
             //logs the message to the database
             using (DBContext db = new DBContext())
@@ -55,6 +54,8 @@ namespace Jindo_Capstone.Controllers
                     msgObject.MessageSID = msgSID;
                 }
 
+                SmsController smsController = new SmsController();
+                smsController.SendMessage(msgObject);
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
@@ -115,7 +116,7 @@ namespace Jindo_Capstone.Controllers
                 {
                     if (IsTextValid(formatedMsg))
                     {
-                        if (formatedMsg.Equals(WebConfigurationManager.AppSettings["ConfrimString"]))
+                        if (formatedMsg.Equals(WebConfigurationManager.AppSettings["ConfirmString"]))
                         {
                             return MessageType.Confirmation;
                         }
