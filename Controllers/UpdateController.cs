@@ -8,6 +8,7 @@ using System.Web.Http;
 using Twilio.Rest.Api.V2010.Account;
 using Jindo_Capstone.Models;
 using System.Data;
+using System.Web.Configuration;
 
 namespace Jindo_Capstone.Controllers
 {
@@ -27,19 +28,24 @@ namespace Jindo_Capstone.Controllers
 
                 if(!OrderController.CheckIfValidOrder(order))
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest,  "Status update failed, order not found.");
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, 
+                        WebConfigurationManager.AppSettings["OrderNotFound"]);
                 }
 
                 if(OrderController.IsStatusValid(order))
                 {
                     Order updatedOrder = OrderController.UpdateOrder(order);
-                    MessageController.CreateOutgoingMessage(OrderController.GetCustomer(updatedOrder), "Your order has been ship! Your tracking number is: " + updatedOrder.TrackingNumber, MessageType.Outbound);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, "Message has been sent!");
+                    MessageController.CreateOutgoingMessage(OrderController.GetCustomer(updatedOrder),
+                        WebConfigurationManager.AppSettings["OrderShippedMsg"] 
+                        + updatedOrder.TrackingNumber, MessageType.Outbound);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, WebConfigurationManager.AppSettings["MsgSent"]);
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Message Type Invalid");
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, 
+                        WebConfigurationManager.AppSettings["MsgInvalid"]);
                 }
         }
     }
