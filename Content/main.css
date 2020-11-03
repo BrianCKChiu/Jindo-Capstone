@@ -2,4 +2,9 @@
     min-height: 100% !important;
     height: 100%;
 }
-
+/* https://stackoverflow.com/questions/20547819/vertical-align-with-bootstrap-3 */
+.vertical-centre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
