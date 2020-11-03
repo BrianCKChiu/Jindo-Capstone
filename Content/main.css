@@ -1,10 +1,17 @@
 ﻿html, body {
     min-height: 100% !important;
     height: 100%;
+    background-image: url("https://www.freecodecamp.org/news/content/images/2020/04/w-qjCHPZbeXCQ-unsplash.jpg");
 }
 /* https://stackoverflow.com/questions/20547819/vertical-align-with-bootstrap-3 */
 .vertical-centre {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-image
 }
+    .vertical-centre > div {
+        border-style: double;
+        padding: 10px;
+        background-color: ghostwhite;
+    }
