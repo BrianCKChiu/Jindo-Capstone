@@ -29,7 +29,7 @@ namespace Jindo_Capstone.Models
     public enum MessageType
     {
         //incoming messages
-        Inbound = 0,  Confirmation = 2, Invalid = 4, Decline = 6,
+        Inbound = 0,  Confirmation = 2, Invalid = 4, Decline = 6, Unsubscribe = 7,
 
         //outgoing messages
         Outbound = 1, Request = 3, Error = 5
