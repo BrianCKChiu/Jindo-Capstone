@@ -22,7 +22,7 @@
                     <th scope="col">Phone</th>
                     <th scope="col">Address</th>
                     <th scope="col">LastMessaged</th>
-
+                    <th scope="col">Subscription</th>
                 </tr>
             </thead>
 
@@ -32,12 +32,32 @@
                 for (var i = 0; i < Model.Customers.Count; i++)
                 {
                     <tr id="@Model.Customers[i].CustID">
-                        <td><button onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button></td>
+                        <td>
+                            @if (@Model.Customers[i].IsSubscribed.Equals(true))
+                            {
+                                <button onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
+                            }
+                            else
+                            {
+                                <button disabled onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
+                            }
+                        </td>
                         <td>@Model.Customers[i].ContactName</td>
                         <td>@Model.Customers[i].PhoneNumber</td>
                         <td>@Model.Customers[i].ShippingAddress</td>
-                        <td>@(Model.Customers[i].LastMessaged?.ToString("MM/dd/yyyy h:mm tt")) </td>
+                        <td>@(Model.Customers[i].LastMessaged?.ToString("MM/dd/yyyy h:mm tt"))</td>
+                        <td>
+                            @if (@Model.Customers[i].IsSubscribed.Equals(true))
+                            {
+                                <button name="subscription" onclick="location.href='@Url.Action("Unsubscribe", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Unsubscribe</button>
+                            }
+                            else
+                            {
+                                <button name="subscription" onclick="location.href='@Url.Action("Subscribe", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Subscribe</button>
+                            }
+                        </td>
                     </tr>
+
 
 
                 }
