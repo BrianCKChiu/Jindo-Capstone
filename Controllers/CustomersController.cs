@@ -53,6 +53,34 @@ namespace Jindo_Capstone.Controllers
                     return true;
             }
         }
+
+        public ActionResult Unsubscribe(int id)
+        {
+            // Grab the customer
+            using (DBContext db = new DBContext())
+            {
+                var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
+                // Unsubscribe the customer
+                customer.IsSubscribed = false;
+                db.SaveChanges();
+            }
+            
+            return Redirect("~/Customers/Index");
+        }
+
+        public ActionResult Subscribe(int id)
+        {
+            // Grab the customer
+            using (DBContext db = new DBContext())
+            {
+                var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
+                // Subscribe the customer
+                customer.IsSubscribed = true;
+                db.SaveChanges();
+            }
+
+            return Redirect("~/Customers/Index");
+        }
     }
 
 
