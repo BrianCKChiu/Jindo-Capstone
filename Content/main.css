@@ -1,0 +1,20 @@
+﻿html, body {
+    min-height: 100% !important;
+    height: 100%;
+    background-image: url("images/background.jpg");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+/* https://stackoverflow.com/questions/20547819/vertical-align-with-bootstrap-3 */
+.vertical-centre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-image
+}
+    .vertical-centre > div {
+        border-style: double;
+        padding: 10px;
+        background-color: ghostwhite;
+    }
