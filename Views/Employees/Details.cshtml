@@ -19,6 +19,22 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Type)
         </dt>
 
@@ -32,3 +48,4 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.UserName }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
