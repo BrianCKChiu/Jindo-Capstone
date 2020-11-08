@@ -85,10 +85,6 @@ namespace Jindo_Capstone.Controllers
                     case MessageType.Decline:
                         response.Message(WebConfigurationManager.AppSettings["Decline"]);
                         break;
-                    case MessageType.Unsubscribe:
-                        response.Message(WebConfigurationManager.AppSettings["Unsubscribe"]);
-                        //customer.IsSubscribed = 
-                        break;
                     default:
                         response.Message(WebConfigurationManager.AppSettings["Error"]);
                         break;

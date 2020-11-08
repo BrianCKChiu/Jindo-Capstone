@@ -120,10 +120,6 @@ namespace Jindo_Capstone.Controllers
                         {
                             return MessageType.Confirmation;
                         }
-                        else if (formatedMsg.Equals(WebConfigurationManager.AppSettings["UnsubscribeString"]))
-                        {
-                            return MessageType.Unsubscribe;
-                        }
                         else
                         {
                             return MessageType.Decline;
@@ -150,8 +146,6 @@ namespace Jindo_Capstone.Controllers
                 case "yes":
                     return true;
                 case "no":
-                    return true;
-                case "terminate":
                     return true;
                 default:
                     return false;
