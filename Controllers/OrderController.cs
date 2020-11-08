@@ -141,6 +141,58 @@ namespace Jindo_Capstone.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public static Customer GetCustomer(Order order)
+        {
+            DBContext db = new DBContext();
+            return (from c in db.Customers where order.CustID == c.CustID select c).Single();
+        }
+
+        public static bool IsStatusValid(Order order)
+        {
+            if (Enum.IsDefined(typeof(OrderStatus), order.Status))
+                return true;
+            else
+                return false;
+        }
+
+        public static void ChangeOrderStatus(Order order, OrderStatus status)
+        {
+            order.Status = status;
+        }
+
+        public static Order UpdateOrder(Order order)
+        {
+            using (DBContext db = new DBContext())
+            {
+
+                Order queryOrder = (from o in db.Orders where o.OrderID == order.OrderID select o).SingleOrDefault();
+                queryOrder.Status = order.Status;
+
+                if (order.TrackingNumber != null)
+                {
+                    queryOrder.TrackingNumber = order.TrackingNumber;
+                }
+
+                db.SaveChanges();
+                return queryOrder;
+            }
+        }
+
+        public static bool CheckIfValidOrder(Order order)
+        {
+            using (DBContext db = new DBContext())
+            {
+                Order queryOrder = (from o in db.Orders where o.OrderID == order.OrderID select o).SingleOrDefault();
+
+                if (queryOrder == null)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

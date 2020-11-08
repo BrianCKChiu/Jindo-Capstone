@@ -11,6 +11,8 @@ using Twilio.AspNet.Mvc;
 using Jindo_Capstone.Models;
 using System.Web.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Security;
+using WebGrease.Configuration;
 
 namespace Jindo_Capstone.Controllers
 {
@@ -42,99 +44,59 @@ namespace Jindo_Capstone.Controllers
                 from: _twilioNumber,
                 to: msg.Customer.PhoneNumber,
                 client: _client);
-            //returns unique ID of msg
+
             return msgObject.Sid;
         }
 
 
-        //[Sms/Incoming]
         /// <summary>
-        /// Process incomming messages received 
+        /// Process incomming messages received and returns a response to the sender
+        /// [Sms/Incoming]
         /// </summary>
         /// <param name="incomingMessage">Incoming Message object</param>
         /// <returns>Returns a response text message to the user</returns>
         [HttpPost]
         public TwiMLResult Incoming(SmsRequest incomingMessage)
         {
-            
             var response = new MessagingResponse();
             DBContext db = new DBContext();
            
-            if (CheckValidCustomer(incomingMessage.From))
+            if (CustomersController.CheckValidCustomer(incomingMessage.From))
             {
                 Customer customer = (from c in db.Customers where incomingMessage.From.Trim().Equals(c.PhoneNumber) select c).Single();
-
                 var customerID = customer.CustID;
-                MessageController.AddIncomingMessage(customer, incomingMessage.Body, incomingMessage.SmsSid);
-                var latestMsg = (from m in db.Messages where m.CustID == customerID orderby m.Date descending select m).FirstOrDefault();
+                var IncomingMessagetype = MessageController.DetermineResponse(incomingMessage.Body, customerID);
+                String messageBody = incomingMessage.Body;
+                
+                MessageController.AddIncomingMessage(customer, messageBody, incomingMessage.SmsSid);
 
-                if (latestMsg != null)
+                switch (IncomingMessagetype)
                 {
-                    if (latestMsg.Type == MessageType.Request || latestMsg.Type == MessageType.Invalid || latestMsg.Type == MessageType.Inbound)
-                    {
-                        String messageText;
-                        if (IsMessageValid(incomingMessage.Body))
-                        {
-                            Order order = OrderController.CreateOrder(customer);
-                            messageText = "Success! Your Order has been placed \n Your invoice number is: " + order.OrderID;
-                            response.Message(messageText);
-                            MessageController.CreateOutgoingMessage(customer, messageText, MessageType.Confirmation);
-                            return TwiML(response);
-                        }
-                        else
-                        {
-                            //Error Message asking users to resend another message
-                            messageText = "Invalid Message, Blah blah blah";
-                            response.Message(messageText);
-                            MessageController.CreateOutgoingMessage(customer, messageText, MessageType.Invalid);
-                            return TwiML(response);
-                        }
-                    }
+                    case MessageType.Confirmation:
+                        Order order = OrderController.CreateOrder(customer);
+                        response.Message(WebConfigurationManager.AppSettings["Confirmation"] + order.OrderID);
+                        break;
+                    case MessageType.Invalid:
+                        response.Message(WebConfigurationManager.AppSettings["Invalid"]);
+                        break;
+                    case MessageType.Error:
+                        response.Message(WebConfigurationManager.AppSettings["Error"]);
+                        break;
+                    case MessageType.Decline:
+                        response.Message(WebConfigurationManager.AppSettings["Decline"]);
+                        break;
+                    default:
+                        response.Message(WebConfigurationManager.AppSettings["Error"]);
+                        break;
                 }
-            }
-
-            //Return an error msg if message came from a user not in the table
-            response.Message(""); 
-            return TwiML(response);
-        }
-
-        /// <summary>
-        /// Checks if customer's reponse is a valid response to order a new set of paper roll
-        /// </summary>
-        /// <param name="message">Customer's response message</param>
-        /// <returns></returns>
-        public bool IsMessageValid(string message)
-        {
-            string unformattedMsg = (message.Trim()).ToLower();
-
-            switch (unformattedMsg)
+                MessageController.CreateOutgoingMessage(customer, WebConfigurationManager.AppSettings[IncomingMessagetype.ToString()], IncomingMessagetype);
+                return TwiML(response);
+            } 
+            else
             {
-                case "yes":
-                    return true;
-                case "no":
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks if the phone number is in the customer table and sees if they are subsscribed
-        /// </summary>
-        /// <param name="phoneNumber">Phone number that sent the message</param>
-        /// <returns>If its a valid user</returns>
-        public bool CheckValidCustomer(string phoneNumber)
-        {
-            //TODO: check if phone number is valid format
-            using (DBContext db = new DBContext())
-            {
-                var isValid = (from c in db.Customers where phoneNumber.Equals(c.PhoneNumber) && c.IsSubscribed == true select c).FirstOrDefault();
-                if (isValid == null)
-                {
-                    return false;
-                }
-                else
-                    return true;
+                //Return an error msg if message came from a user not in the table
+                response.Message(WebConfigurationManager.AppSettings["UnknowNumber"]);
+                return TwiML(response);
             }
         }
     }
