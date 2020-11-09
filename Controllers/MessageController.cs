@@ -14,6 +14,7 @@ namespace Jindo_Capstone.Controllers
     {
 
         private readonly static string[] validText = { "yes", "no", "terminate" };
+
         /// <summary>
         /// Creates a re-order message to a customer
         /// </summary>
@@ -48,25 +49,22 @@ namespace Jindo_Capstone.Controllers
                     };
 
                 //updates last sent message to the recipient
-                UpdateLastMesseged(customer);
+                UpdateLastMessaged(customer);
 
-                if (msgType == MessageType.Request)
-                {
-                    String msgSID = Messenger.SendMessage(msgObject); 
-                    msgObject.MessageSID = msgSID;
-                }
+                //add the MessageSID
+                String msgSID = Messenger.SendMessage(msgObject); 
+                msgObject.MessageSID = msgSID;
 
-                SmsController smsController = new SmsController();
-                smsController.SendMessage(msgObject);
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
         }
+
         /// <summary>
         /// Updates last received/sent message of a recipient
         /// </summary>
         /// <param name="cust">recipient that set/recieved a message</param>
-        private static void UpdateLastMesseged(Customer cust)
+        private static void UpdateLastMessaged(Customer cust)
         {
             using (DBContext db = new DBContext())
             {
@@ -151,6 +149,7 @@ namespace Jindo_Capstone.Controllers
 
             }
         }
+
         /// <summary>
         /// Checks if customer's reponse is a valid response to order a new set of paper roll
         /// </summary>
@@ -158,8 +157,13 @@ namespace Jindo_Capstone.Controllers
         /// <returns></returns>
         private static bool IsTextValid(string message)
         {
-            return validText.Contains(message);
+            if (message.Equals("yes") || message.Equals("no") || message.Equals("terminate"))
+            {
+                return true;
+            }
+            return false;
         }
+
         /// <summary>
         /// Formates message to all lowercase
         /// </summary>

@@ -27,10 +27,12 @@ namespace Jindo_Capstone.Controllers
         {
             _client = new TwilioRestClient(_accountSid, _tokenAuth);
         }
+
         public SmsController(TwilioRestClient client)
         {
             _client = client;
         }
+
         /// <summary>
         /// Sends a outgoing message 
         /// </summary>
