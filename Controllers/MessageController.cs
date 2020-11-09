@@ -112,12 +112,10 @@ namespace Jindo_Capstone.Controllers
 
             if (IsTextValid(formatedMsg))
             {
-                
-                /*
-                if (true) //condition to check if 
+                if (message.Equals(WebConfigurationManager.AppSettings["UnsubscribeString"]))
                 {
-                    //return ...     //todo call a method to check if msg is unsubscribe        
-                }*/
+                    return MessageType.Unsubscribe;
+                }
 
                 return DetermineResponseType(formatedMsg, customerID);
             }
@@ -141,10 +139,6 @@ namespace Jindo_Capstone.Controllers
                         if (message.Equals(WebConfigurationManager.AppSettings["ConfirmString"]))
                         {
                             return MessageType.Confirmation;
-                        }
-                        else if (message.Equals(WebConfigurationManager.AppSettings["UnsubscribeString"]))
-                        {
-                            return MessageType.Unsubscribe;
                         }
                         else
                         {
