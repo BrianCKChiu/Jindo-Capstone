@@ -12,6 +12,8 @@ namespace Jindo_Capstone.Controllers
 {
     public class MessageController : ApiController
     {
+
+        private readonly static string[] validText = { "yes", "no" };
         /// <summary>
         /// Creates a re-order message to a customer
         /// </summary>
@@ -102,21 +104,41 @@ namespace Jindo_Capstone.Controllers
         /// <param name="message">Message the user has sent</param>
         /// <param name="customerID">The customer who've sent the message</param>
         /// <returns>Type of message</returns>
-        public static MessageType DetermineResponse(String message, int customerID)
+        public static MessageType DetermineMessageType(String message, int customerID)
         {
 
             DBContext db = new DBContext();
-            
-            var latestMsg = (from m in db.Messages where m.CustID == customerID orderby m.Date descending select m).FirstOrDefault();
             var formatedMsg = FormatMsg(message);
 
-            if (latestMsg != null)
+            if (IsTextValid(formatedMsg))
             {
-                if (latestMsg.Type == MessageType.Request || latestMsg.Type == MessageType.Invalid || latestMsg.Type == MessageType.Inbound)
+                
+
+                if (true) //condition to check if 
                 {
-                    if (IsTextValid(formatedMsg))
+                    //return ...     //todo call a method to check if msg is unsubscribe        
+                }
+
+                return DetermineResponseType(formatedMsg, customerID);
+            }
+            return MessageType.Error;
+        }
+
+
+        //change method name
+        private static MessageType DetermineResponseType(String message, int customerID) {
+            using (DBContext db = new DBContext())
+            {
+                var latestMsg = (from m in db.Messages where m.CustID == customerID orderby m.Date descending select m).FirstOrDefault();
+                
+            
+                if (latestMsg != null)
+                {
+                    if (latestMsg.Type == MessageType.Request || latestMsg.Type == MessageType.Invalid || latestMsg.Type == MessageType.Inbound)
                     {
-                        if (formatedMsg.Equals(WebConfigurationManager.AppSettings["ConfirmString"]))
+
+                        //chhange this to a switch statement 
+                        if (message.Equals(WebConfigurationManager.AppSettings["ConfirmString"]))
                         {
                             return MessageType.Confirmation;
                         }
@@ -125,13 +147,10 @@ namespace Jindo_Capstone.Controllers
                             return MessageType.Decline;
                         }
                     }
-                    else
-                    {
-                        return MessageType.Invalid;
-                    }
                 }
+            return MessageType.Invalid;
+
             }
-            return MessageType.Error;
         }
         /// <summary>
         /// Checks if customer's reponse is a valid response to order a new set of paper roll
@@ -140,16 +159,7 @@ namespace Jindo_Capstone.Controllers
         /// <returns></returns>
         private static bool IsTextValid(string message)
         {
-
-            switch (message)
-            {
-                case "yes":
-                    return true;
-                case "no":
-                    return true;
-                default:
-                    return false;
-            }
+            return validText.Contains(message);
         }
         /// <summary>
         /// Formates message to all lowercase
