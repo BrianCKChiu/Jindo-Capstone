@@ -65,7 +65,7 @@ namespace Jindo_Capstone.Controllers
             {
                 Customer customer = (from c in db.Customers where incomingMessage.From.Trim().Equals(c.PhoneNumber) select c).Single();
                 var customerID = customer.CustID;
-                var IncomingMessagetype = MessageController.DetermineMessageType(incomingMessage.Body, customerID);
+                var IncomingMessagetype = MessageController.DetermineResponse(incomingMessage.Body, customerID);
                 String messageBody = incomingMessage.Body;
                 
                 MessageController.AddIncomingMessage(customer, messageBody, incomingMessage.SmsSid);
