@@ -13,7 +13,7 @@ namespace Jindo_Capstone.Controllers
     public class MessageController : ApiController
     {
 
-        private readonly static string[] validText = { "yes", "no" };
+        private readonly static string[] validText = { "yes", "no", "terminate" };
         /// <summary>
         /// Creates a re-order message to a customer
         /// </summary>
@@ -113,11 +113,11 @@ namespace Jindo_Capstone.Controllers
             if (IsTextValid(formatedMsg))
             {
                 
-
+                /*
                 if (true) //condition to check if 
                 {
                     //return ...     //todo call a method to check if msg is unsubscribe        
-                }
+                }*/
 
                 return DetermineResponseType(formatedMsg, customerID);
             }
@@ -142,12 +142,17 @@ namespace Jindo_Capstone.Controllers
                         {
                             return MessageType.Confirmation;
                         }
+                        else if (message.Equals(WebConfigurationManager.AppSettings["UnsubscribeString"]))
+                        {
+                            return MessageType.Unsubscribe;
+                        }
                         else
                         {
                             return MessageType.Decline;
                         }
                     }
                 }
+
             return MessageType.Invalid;
 
             }
