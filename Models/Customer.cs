@@ -24,4 +24,9 @@ namespace Jindo_Capstone.Models
         [DisplayFormat(NullDisplayText = "Never")]
         public DateTime? LastMessaged { get; set; }
     }
+
+    // Inclusion of CustomerList as a result of the customer batch submit form requiring this object type
+    public class CustomerList { 
+        public List<Customer> customers { get; set; }
+    }
 }
