@@ -41,9 +41,9 @@ namespace Jindo_Capstone.Controllers
         private DBContext db = new DBContext();
 
         // GET: OrdersView
-        public ActionResult Index(int? pageNumber, int? pageSize)
+        public ActionResult Index(int pageNumber=1, int pageSize=10)
         {
-            return View(db.Orders.ToList().ToPagedList(pageNumber ?? 1, pageSize ?? 10));
+            return View(db.Orders.ToList().ToPagedList(pageNumber, pageSize));
         }
 
         // GET: OrdersView/Details/5
