@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Jindo_Capstone.Workers;
+using System.Windows.Forms;
 
 namespace Jindo_Capstone.Controllers
 {
@@ -62,7 +63,34 @@ namespace Jindo_Capstone.Controllers
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
                 // Unsubscribe the customer
                 customer.IsSubscribed = false;
-                db.SaveChanges();
+                var result = db.SaveChanges();
+                if (result > 0)
+                {
+                    // Initializes the variables to pass to the MessageBox.Show method.
+                    string message = customer.ContactName + " has been unsubscribed.";
+                    string caption = "Success";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult dialog;
+
+                    // Displays the MessageBox.
+                    dialog = MessageBox.Show(message, caption, buttons);
+                    /*
+                    if (dialog == System.Windows.Forms.DialogResult.OK)
+                    {
+                        // Closes the parent form.
+                        this.Close();
+                    }*/
+                }
+                else
+                {
+                    string message = "There has been an internal server error, please contact your system administrator.";
+                    string caption = "Error";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult dialog;
+
+                    // Displays the MessageBox.
+                    dialog = MessageBox.Show(message, caption, buttons);
+                }
             }
             
             return Redirect("~/Customers/Index");
@@ -76,7 +104,34 @@ namespace Jindo_Capstone.Controllers
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
                 // Subscribe the customer
                 customer.IsSubscribed = true;
-                db.SaveChanges();
+                var result = db.SaveChanges();
+                if (result > 0)
+                {
+                    // Initializes the variables to pass to the MessageBox.Show method.
+                    string message = customer.ContactName + " has been subscribed.";
+                    string caption = "Success";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult dialog;
+
+                    // Displays the MessageBox.
+                    dialog = MessageBox.Show(message, caption, buttons);
+                    /*
+                    if (dialog == System.Windows.Forms.DialogResult.OK)
+                    {
+                        // Closes the parent form.
+                        this.Close();
+                    }*/
+                }
+                else
+                {
+                    string message = "There has been an internal server error, please contact your system administrator.";
+                    string caption = "Error";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult dialog;
+
+                    // Displays the MessageBox.
+                    dialog = MessageBox.Show(message, caption, buttons);
+                }
             }
 
             return Redirect("~/Customers/Index");
