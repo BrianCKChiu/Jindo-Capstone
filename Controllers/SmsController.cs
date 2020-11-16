@@ -76,6 +76,10 @@ namespace Jindo_Capstone.Controllers
                         Order order = OrderController.CreateOrder(customer);
                         response.Message(WebConfigurationManager.AppSettings["Confirmation"] + order.OrderID);
                         break;
+                    case MessageType.Unsubscribe:
+                        response.Message(WebConfigurationManager.AppSettings["Unsubscribe"]);
+                        CustomersController.SelfUnsubscribe(customerID);
+                        break;
                     case MessageType.Invalid:
                         response.Message(WebConfigurationManager.AppSettings["Invalid"]);
                         break;

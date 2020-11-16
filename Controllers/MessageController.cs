@@ -53,9 +53,12 @@ namespace Jindo_Capstone.Controllers
                     String msgSID = Messenger.SendMessage(msgObject); 
                     msgObject.MessageSID = msgSID;
                 }
-
-                SmsController smsController = new SmsController();
-                smsController.SendMessage(msgObject);
+                else
+                {
+                    SmsController smsController = new SmsController();
+                    smsController.SendMessage(msgObject);
+                }
+                
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
@@ -120,6 +123,10 @@ namespace Jindo_Capstone.Controllers
                         {
                             return MessageType.Confirmation;
                         }
+                        else if (formatedMsg.Equals(WebConfigurationManager.AppSettings["UnsubscribeString"]))
+                        {
+                            return MessageType.Unsubscribe;
+                        }
                         else
                         {
                             return MessageType.Decline;
@@ -146,6 +153,8 @@ namespace Jindo_Capstone.Controllers
                 case "yes":
                     return true;
                 case "no":
+                    return true;
+                case "terminate":
                     return true;
                 default:
                     return false;

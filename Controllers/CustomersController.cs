@@ -96,6 +96,18 @@ namespace Jindo_Capstone.Controllers
             return Redirect("~/Customers/Index");
         }
 
+        public static void SelfUnsubscribe(int id)
+        {
+            // Grab the customer
+            using (DBContext db = new DBContext())
+            {
+                var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
+                // Unsubscribe the customer
+                customer.IsSubscribed = false;
+                db.SaveChanges();
+            }
+        }
+
         public ActionResult Subscribe(int id)
         {
             // Grab the customer
