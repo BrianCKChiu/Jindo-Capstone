@@ -14,16 +14,16 @@ namespace Jindo_Capstone.App_Start
     {
         public void Configuration(IAppBuilder app)
         {
-            // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
-            //SendTextMessageJob s = new SendTextMessageJob();
-            //s.Execute();
+            
             app.UseHangfireAspNet(GetHangfireServers);
             app.UseHangfireDashboard("/jobs");
-            //BackgroundJob.Enqueue(() => s.Execute());
+
+            /* requires paid azure webssite to keep the job running in the background
+             * References: https://docs.hangfire.io/en/latest/deployment-to-production/making-aspnet-app-always-running.html#azure-web-applications
+             */
             //Executes task bi-weekly on wensday at noon 
-            //RecurringJob.AddOrUpdate("Send-TextMsg", () => SendTextMessageJob.Execute(), "* 12 */15 * 3" );
-            //RecurringJob.RemoveIfExists("SendMessage");
-            //RecurringJob.AddOrUpdate("SendMessage", () => SendTextMessageJob.Execute(), Cron.Minutely);
+            //RecurringJob.AddOrUpdate("SendTextMsgJob", () => SendTextMessageJob.Execute(), "* 12 */15 * 3" );
+
         }
         public void Configure(IAppBuilder app) {
 
