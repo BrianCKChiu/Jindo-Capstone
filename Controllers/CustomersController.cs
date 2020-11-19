@@ -62,8 +62,7 @@ namespace Jindo_Capstone.Controllers
             {
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
                 // Unsubscribe the customer
-                customer.IsSubscribed = false;
-                var result = db.SaveChanges();
+                int result = SubscriptionController.Unsubscribe(customer.CustID);
                 if (result > 0)
                 {
                     // Initializes the variables to pass to the MessageBox.Show method.
@@ -96,17 +95,7 @@ namespace Jindo_Capstone.Controllers
             return Redirect("~/Customers/Index");
         }
 
-        public static void SelfUnsubscribe(int id)
-        {
-            // Grab the customer
-            using (DBContext db = new DBContext())
-            {
-                var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
-                // Unsubscribe the customer
-                customer.IsSubscribed = false;
-                db.SaveChanges();
-            }
-        }
+
 
         public ActionResult Subscribe(int id)
         {
@@ -114,9 +103,7 @@ namespace Jindo_Capstone.Controllers
             using (DBContext db = new DBContext())
             {
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
-                // Subscribe the customer
-                customer.IsSubscribed = true;
-                var result = db.SaveChanges();
+                int result = SubscriptionController.Subscribe(customer.CustID);
                 if (result > 0)
                 {
                     // Initializes the variables to pass to the MessageBox.Show method.

@@ -78,7 +78,7 @@ namespace Jindo_Capstone.Controllers
                         break;
                     case MessageType.Unsubscribe:
                         response.Message(WebConfigurationManager.AppSettings["Unsubscribe"]);
-                        CustomersController.SelfUnsubscribe(customerID);
+                        SubscriptionController.Unsubscribe(customerID);
                         break;
                     case MessageType.Invalid:
                         response.Message(WebConfigurationManager.AppSettings["Invalid"]);
@@ -94,7 +94,7 @@ namespace Jindo_Capstone.Controllers
                         break;
                 }
                 MessageController.CreateOutgoingMessage(customer, WebConfigurationManager.AppSettings[IncomingMessagetype.ToString()], IncomingMessagetype);
-                return TwiML(response);
+                return null;
             } 
             else
             {
