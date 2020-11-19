@@ -47,18 +47,9 @@ namespace Jindo_Capstone.Controllers
 
                 //updates last sent message to the recipient
                 UpdateLastMesseged(customer);
+                Messenger.SendMessage(msgObject); 
 
-                if (msgType == MessageType.Request)
-                {
-                    String msgSID = Messenger.SendMessage(msgObject); 
-                    msgObject.MessageSID = msgSID;
-                }
-                else
-                {
-                    SmsController smsController = new SmsController();
-                    smsController.SendMessage(msgObject);
-                }
-                
+
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
@@ -112,21 +103,22 @@ namespace Jindo_Capstone.Controllers
             
             var latestMsg = (from m in db.Messages where m.CustID == customerID orderby m.Date descending select m).FirstOrDefault();
             var formatedMsg = FormatMsg(message);
-
-            if (latestMsg != null)
+            if (IsTextValid(formatedMsg))
             {
-                if (latestMsg.Type == MessageType.Request || latestMsg.Type == MessageType.Invalid || latestMsg.Type == MessageType.Inbound)
+                if (formatedMsg.Equals(WebConfigurationManager.AppSettings["UnsubscribeString"]))
                 {
-                    if (IsTextValid(formatedMsg))
+                    return MessageType.Unsubscribe;
+                }
+                if (latestMsg != null)
+                {
+                    if (latestMsg.Type == MessageType.Request || latestMsg.Type == MessageType.Invalid || latestMsg.Type == MessageType.Inbound)
                     {
+
                         if (formatedMsg.Equals(WebConfigurationManager.AppSettings["ConfirmString"]))
                         {
                             return MessageType.Confirmation;
                         }
-                        else if (formatedMsg.Equals(WebConfigurationManager.AppSettings["UnsubscribeString"]))
-                        {
-                            return MessageType.Unsubscribe;
-                        }
+
                         else
                         {
                             return MessageType.Decline;
@@ -138,6 +130,7 @@ namespace Jindo_Capstone.Controllers
                     }
                 }
             }
+            
             return MessageType.Error;
         }
         /// <summary>
