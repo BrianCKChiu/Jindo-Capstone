@@ -35,6 +35,33 @@ namespace Jindo_Capstone.Controllers
             return Redirect("~/Customers/Index");
         }
 
+        public ActionResult SendAll()
+        {
+            // Get All Subscribed Customers
+            // Reference: https://stackoverflow.com/questions/10900250/select-all-rows-using-entity-framework/10905834
+            List<Customer> customers;
+            using (DBContext db = new DBContext())
+            {
+                 customers = db.Customers.ToList();
+            }
+            foreach (Customer customer in customers)
+            {
+                if (customer.IsSubscribed == true)
+                {
+                    SendTextMessageJob.Execute(customer.CustID);
+                }
+            }
+            // Initializes the variables to pass to the MessageBox.Show method.
+            string message = "Mass message has been sent.";
+            string caption = "Success";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            DialogResult dialog;
+
+            // Displays the MessageBox.
+            dialog = MessageBox.Show(message, caption, buttons);
+            return Redirect("~/Customers/Index");
+        }
+
         /// <summary>
         /// Checks if the phone number is in the customer table and sees if they are subsscribed
         /// </summary>
@@ -94,7 +121,6 @@ namespace Jindo_Capstone.Controllers
             
             return Redirect("~/Customers/Index");
         }
-
 
 
         public ActionResult Subscribe(int id)
