@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Jindo_Capstone.Workers;
-using System.Diagnostics;
 using System.Text;
 
 namespace Jindo_Capstone.Controllers
@@ -33,31 +32,22 @@ namespace Jindo_Capstone.Controllers
         public ActionResult Send(int id)
         {
             SendTextMessageJob.Execute(id);
+
             return Redirect("~/Customers/Index");
         }
 
-
-        // Batch Submit - Responds to the form and the generated html tags
+        // Batch Submit - For sending texts to a group of selected users
         [HttpPost]
         public ActionResult BatchSubmit(CustomerList cl)
         {
-
-            Debug.WriteLine("This is the Batch Submit");
-
-            List<int> selItems = new List<int>();
+            // foreach loops through each of the customer items in CustomerList which is a list of all the checkboxes on the page
             foreach (var item in cl.customers)
             {
+                // Each item in customers is checked to determine if the checkbox item has been checked, sends text if it has been.
                 if (item.IsChecked) {
-                    selItems.Add(item.CustID);
-                    Debug.WriteLine("Added: " + item.CustID);
+                   SendTextMessageJob.Execute(item.CustID);
                 }
             }
-
-            /* 
-            For actually sending the batch
-            foreach (var item in selItems) {
-                SendTextMessageJob.Execute(id);
-            }*/
 
             return Redirect("~/Customers/Index");
         }
