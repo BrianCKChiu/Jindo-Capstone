@@ -45,7 +45,7 @@ namespace Jindo_Capstone.Controllers
             {
                 // Each item in customers is checked to determine if the checkbox item has been checked, sends text if it has been.
                 if (item.IsChecked) {
-                   SendTextMessageJob.Execute(item.CustID);
+                    SendTextMessageJob.Execute(item.CustID);
                 }
             }
 
