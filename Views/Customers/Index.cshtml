@@ -13,62 +13,61 @@
 </head>
 <body>
     <div class="container">
-
-        <button name="sendAll" onclick="location.href='@Url.Action("SendAll", "Customers")'" class="btn btn-primary">Send All</button>
-
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Message</th>
-                    <th scope="col">Contact Name</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">LastMessaged</th>
-                    <th scope="col">Subscription</th>
-                </tr>
-            </thead>
-
-            @if (Model != null)
-            {
-
-                for (var i = 0; i < Model.Customers.Count; i++)
-                {
-                    <tr id="@Model.Customers[i].CustID">
-                        <td>
-                            @if (@Model.Customers[i].IsSubscribed.Equals(true))
-                            {
-                                <button onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
-                            }
-                            else
-                            {
-                                <button disabled onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
-                            }
-                        </td>
-                        <td>@Model.Customers[i].ContactName</td>
-                        <td>@Model.Customers[i].PhoneNumber</td>
-                        <td>@Model.Customers[i].ShippingAddress</td>
-                        <td>@(Model.Customers[i].LastMessaged?.ToString("MM/dd/yyyy h:mm tt"))</td>
-                        <td>
-                            @if (@Model.Customers[i].IsSubscribed.Equals(true))
-                            {
-                                <button name="subscription" onclick="location.href='@Url.Action("Unsubscribe", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Unsubscribe</button>
-                            }
-                            else
-                            {
-                                <button name="subscription" onclick="location.href='@Url.Action("Subscribe", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Subscribe</button>
-                            }
-                        </td>
+        <form action="/Customers/BatchSubmit" method="post">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Message</th>
+                        <th scope="col">Contact Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">LastMessaged</th>
+                        <th scope="col">Subscription</th>
+                        <th scope="col"><input type="submit" value="Submit Batch" class="btn btn-warning" /></th>
                     </tr>
+                </thead>
 
+                @if (Model != null)
+                {
 
-
+                    for (var i = 0; i < Model.Customers.Count; i++)
+                    {
+                        <tr id="@Model.Customers[i].CustID">
+                            <td>
+                                @if (@Model.Customers[i].IsSubscribed.Equals(true))
+                                {
+                                    <button type="button" onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
+                                }
+                                else
+                                {
+                                    <button  type="button" disabled onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
+                                }
+                            </td>
+                            <td>@Model.Customers[i].ContactName</td>
+                            <td>@Model.Customers[i].PhoneNumber</td>
+                            <td>@Model.Customers[i].ShippingAddress</td>
+                            <td>@(Model.Customers[i].LastMessaged?.ToString("MM/dd/yyyy h:mm tt"))</td>
+                            <td>
+                                @if (@Model.Customers[i].IsSubscribed.Equals(true))
+                                {
+                                    <button name="subscription" type="button" onclick="location.href='@Url.Action("Unsubscribe", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Unsubscribe</button>
+                                }
+                                else
+                                {
+                                    <button name="subscription" type="button" onclick="location.href='@Url.Action("Subscribe", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Subscribe</button>
+                                }
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(m => @Model.Customers[i].IsChecked)
+                                @Model.Customers[i].ContactName
+                                @Html.HiddenFor(m => Model.Customers[i].CustID)
+                                @Html.HiddenFor(m => Model.Customers[i].ContactName)
+                            </td>
+                        </tr>
+                    }
                 }
-            }
-        </table>
-
-
-
+            </table>
+        </form>
     </div>
-
 </body>
 </html>

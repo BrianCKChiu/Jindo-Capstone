@@ -11,10 +11,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-image
+
 }
-    .vertical-centre > div {
-        border-style: double;
-        padding: 10px;
-        background-color: ghostwhite;
-    }
+.vertical-centre > div {
+    padding: 30px;
+    background-color: white;
+
+}

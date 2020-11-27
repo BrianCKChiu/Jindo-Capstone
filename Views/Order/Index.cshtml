@@ -13,63 +13,72 @@
 *@
 @{ if (Model.Count == 0)
     {
-       <div class="bg-info container">
+        <div class="bg-info container">
             <h1>No orders yet</h1>
-       </div>
+        </div>
     }
 }
 
-    <table class="table">
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Customer.ContactName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().OrderAmount)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Customer.ContactName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().OrderAmount)
-            </th>
-            <th></th>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.ContactName)
+            </td>
+            <td>
+                @{
+                    string displayDate = item.Date.ToString("MMM d, yyyy");
+                }
+                @Html.DisplayFor(modelItem => displayDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderAmount)
+            </td>
+
+            @*
+                    This code might is to navigate to the Delete, Edit, Details page. Might be useful in the future but I am commenting it out for now
+                    <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.OrderID })
+                </td>
+            *@
+
         </tr>
+    }
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer.ContactName)
-                </td>
-                <td>
-                    @{
-                        string displayDate = item.Date.ToString("MMM d, yyyy");
-                    }
-                    @Html.DisplayFor(modelItem => displayDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderAmount)
-                </td>
+</table>
+<b>Page Size:</b>
+<ul class="pagination">
+    <li class="page-item">
+        @Html.ActionLink("10", "Index", new { pageSize = 10, pageNumber = 1 }, new { @class = "page-link" })
+    </li>
+    <li class="page-item">
+        @Html.ActionLink("20", "Index", new { pageSize = 20, pageNumber = 1 }, new { @class = "page-link" })
+    </li>
+    <li class="page-item">
+        @Html.ActionLink("50", "Index", new { pageSize = 50, pageNumber = 1 }, new { @class = "page-link" })
+    </li>
 
-                @*
-                        This code might is to navigate to the Delete, Edit, Details page. Might be useful in the future but I am commenting it out for now
-                        <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.OrderID }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.OrderID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.OrderID })
-                    </td>
-                *@
-
-            </tr>
-        }
-
-    </table>
-    <b>Page Size:</b>
-    @Html.ActionLink("10", "Index", new { pageSize = 10, pageNumber = 1 }) |
-    @Html.ActionLink("20", "Index", new { pageSize = 20, pageNumber = 1 }) |
-    @Html.ActionLink("50", "Index", new { pageSize = 50, pageNumber = 1 })
-    @Html.PagedListPager(Model, pageNumber => Url.Action("Index", "OrdersView", new { pageNumber, pageSize = Request.QueryString["pageSize"] }))
+</ul>
+<b>Page:</b> @Html.PagedListPager(Model, pageNumber => Url.Action("Index", "Order", new { pageNumber, pageSize = Request.QueryString["pageSize"] }))

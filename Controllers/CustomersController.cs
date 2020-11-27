@@ -5,7 +5,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Jindo_Capstone.Workers;
+using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Jindo_Capstone.Controllers
 {
@@ -32,6 +34,32 @@ namespace Jindo_Capstone.Controllers
         public ActionResult Send(int id)
         {
             SendTextMessageJob.Execute(id);
+
+            TempData["ModalMsg"] = "Message is sent";
+            return Redirect("~/Customers/Index");
+        }
+
+        [HttpPost]
+        public ActionResult BatchSubmit(CustomerList cl)
+        {
+            TempData["ModalMsg"] = "";
+            // Used to store the list of customer names for display in the CustomMessageBox
+            string message = "";
+
+            // foreach loops through each of the customer items in CustomerList which is a list of all the checkboxes on the page
+            foreach (var item in cl.customers)
+            {
+                // Each item in customers is checked to determine if the checkbox item has been checked, sends text if it has been.
+                if (item.IsChecked) {
+                    SendTextMessageJob.Execute(item.CustID);
+                    message = message + "\n" + item.ContactName;
+                }
+            }
+            Debug.WriteLine("Before");
+            //Creates a success popup for batch submit
+            TempData["ModalMsgHeading"] = "Batch Successful";
+            TempData["ModalMsg"] = "Batch Submission message has been sent to the following clients:" + message;
+            Debug.WriteLine("After");
             return Redirect("~/Customers/Index");
         }
 
@@ -84,83 +112,40 @@ namespace Jindo_Capstone.Controllers
 
         public ActionResult Unsubscribe(int id)
         {
+            TempData["ModalMsg"] = "";
             // Grab the customer
             using (DBContext db = new DBContext())
             {
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
                 // Unsubscribe the customer
-                int result = SubscriptionController.Unsubscribe(customer.CustID);
-                if (result > 0)
-                {
-                    // Initializes the variables to pass to the MessageBox.Show method.
-                    string message = customer.ContactName + " has been unsubscribed.";
-                    string caption = "Success";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult dialog;
-
-                    // Displays the MessageBox.
-                    dialog = MessageBox.Show(message, caption, buttons);
-                    /*
-                    if (dialog == System.Windows.Forms.DialogResult.OK)
-                    {
-                        // Closes the parent form.
-                        this.Close();
-                    }*/
-                }
-                else
-                {
-                    string message = "There has been an internal server error, please contact your system administrator.";
-                    string caption = "Error";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult dialog;
-
-                    // Displays the MessageBox.
-                    dialog = MessageBox.Show(message, caption, buttons);
-                }
+                customer.IsSubscribed = false;
+                int result = db.SaveChanges();
+                if (result == 1)
+                    TempData["ModalMsg"] = "Successfully Unsubscribe";
             }
-            
             return Redirect("~/Customers/Index");
         }
 
 
         public ActionResult Subscribe(int id)
         {
+            TempData["ModalMsg"] = "";
             // Grab the customer
             using (DBContext db = new DBContext())
             {
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
-                int result = SubscriptionController.Subscribe(customer.CustID);
-                if (result > 0)
-                {
-                    // Initializes the variables to pass to the MessageBox.Show method.
-                    string message = customer.ContactName + " has been subscribed.";
-                    string caption = "Success";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult dialog;
-
-                    // Displays the MessageBox.
-                    dialog = MessageBox.Show(message, caption, buttons);
-                    /*
-                    if (dialog == System.Windows.Forms.DialogResult.OK)
-                    {
-                        // Closes the parent form.
-                        this.Close();
-                    }*/
-                }
-                else
-                {
-                    string message = "There has been an internal server error, please contact your system administrator.";
-                    string caption = "Error";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult dialog;
-
-                    // Displays the MessageBox.
-                    dialog = MessageBox.Show(message, caption, buttons);
-                }
+                // Subscribe the customer
+                customer.IsSubscribed = true;
+                int result = db.SaveChanges();
+                if (result == 1)
+                    TempData["ModalMsg"] = "Successfully Subscribe";
             }
+           
 
             return Redirect("~/Customers/Index");
         }
+
+        
     }
 
 

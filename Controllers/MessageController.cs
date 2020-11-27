@@ -14,6 +14,7 @@ namespace Jindo_Capstone.Controllers
     {
         /// <summary>
         /// Creates a re-order message to a customer
+        /// 
         /// </summary>
         /// <param name="customer">the recipient that the message is sent to</param>
         public static void CreateReorderMessage(Customer customer)
@@ -49,6 +50,16 @@ namespace Jindo_Capstone.Controllers
                 UpdateLastMesseged(customer);
                 Messenger.SendMessage(msgObject); 
 
+                if (msgType == MessageType.Request)
+                {
+                    String msgSID = Messenger.SendMessage(msgObject); 
+                    msgObject.MessageSID = msgSID;
+                }
+                else
+                {
+                    SmsController smsController = new SmsController();
+                    smsController.SendMessage(msgObject);
+                }
 
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
