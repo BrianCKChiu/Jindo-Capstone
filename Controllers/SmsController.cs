@@ -90,7 +90,7 @@ namespace Jindo_Capstone.Controllers
                         break;
                 }
                 MessageController.CreateOutgoingMessage(customer, WebConfigurationManager.AppSettings[IncomingMessagetype.ToString()], IncomingMessagetype);
-                return TwiML(response);
+                return null;
             } 
             else
             {
