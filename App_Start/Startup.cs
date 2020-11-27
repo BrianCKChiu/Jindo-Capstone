@@ -22,7 +22,8 @@ namespace Jindo_Capstone.App_Start
              * References: https://docs.hangfire.io/en/latest/deployment-to-production/making-aspnet-app-always-running.html#azure-web-applications
              */
             //Executes task bi-weekly on wensday at noon 
-            //RecurringJob.AddOrUpdate("SendTextMsgJob", () => SendTextMessageJob.Execute(), "* 12 */15 * 3" );
+        //RecurringJob.AddOrUpdate("SendTextMsgJob", () => SendTextMessageJob.Execute(), "* 12 */15 * 3" );
+            //RecurringJob.AddOrUpdate("SendTextMsgJob", () => SendTextMessageJob.Execute(), "0 * * ? * *");
 
         }
         public void Configure(IAppBuilder app) {
