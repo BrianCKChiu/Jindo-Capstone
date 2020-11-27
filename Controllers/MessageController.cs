@@ -14,6 +14,7 @@ namespace Jindo_Capstone.Controllers
     {
         /// <summary>
         /// Creates a re-order message to a customer
+        /// 
         /// </summary>
         /// <param name="customer">the recipient that the message is sent to</param>
         public static void CreateReorderMessage(Customer customer)

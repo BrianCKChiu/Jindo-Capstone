@@ -7,6 +7,7 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.8.3.js"></script>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @{ 
@@ -14,6 +15,7 @@
              Response.Redirect("~/Home/Logout");
         }   
         }
+
 </head>
 <body>
 
@@ -52,6 +54,24 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
+
+        <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Notice</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @TempData["ModalMsg"]
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+
         <footer>
             <p>&copy; @DateTime.Now.Year - Nifty Notif</p>
         </footer>
@@ -59,5 +79,16 @@
 
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+        var mes = "@TempData["ModalMsg"]";
+        if (mes != "") {
+            $('#confirmationModal').modal({
+                backdrop: false,
+                show: true
+            });
+        }
+    })
+    </script>
 </body>
 </html>
