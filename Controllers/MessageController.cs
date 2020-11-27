@@ -54,9 +54,12 @@ namespace Jindo_Capstone.Controllers
                     String msgSID = Messenger.SendMessage(msgObject); 
                     msgObject.MessageSID = msgSID;
                 }
+                else
+                {
+                    SmsController smsController = new SmsController();
+                    smsController.SendMessage(msgObject);
+                }
 
-                SmsController smsController = new SmsController();
-                smsController.SendMessage(msgObject);
                 db.Messages.Add(msgObject);
                 db.SaveChanges();
             }
