@@ -81,4 +81,4 @@
     </li>
 
 </ul>
-<b>Page:</b> @Html.PagedListPager(Model, pageNumber => Url.Action("Index", "OrdersView", new { pageNumber, pageSize = Request.QueryString["pageSize"] }))
+<b>Page:</b> @Html.PagedListPager(Model, pageNumber => Url.Action("Index", "Order", new { pageNumber, pageSize = Request.QueryString["pageSize"] }))

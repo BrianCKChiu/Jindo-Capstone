@@ -8,13 +8,15 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.8.3.js"></script>
 
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @{ 
-        if (Session["userName"] == null) { 
-             Response.Redirect("~/Home/Logout");
-        }   
+    @{
+        if (Session["userName"] == null)
+        {
+            Response.Redirect("~/Home/Logout");
         }
+    }
 
 </head>
 <body>
@@ -32,17 +34,17 @@
                 <li class="nav-item">@Html.ActionLink("Orders", "Index", "Order", new { area = "" }, new { @class = "nav-link" })</li>
 
             </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user"></span> @Session["userName"]  <span class="caret"></span></a>
-                        <div class="dropdown-menu">
-                            @Html.ActionLink("Log Out", "Logout", "Home", new { area = "" }, new { @class = "dropdown-item" })
-                        </div>
-                    </li>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user"></span> @Session["userName"]  <span class="caret"></span></a>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Log Out", "Logout", "Home", new { area = "" }, new { @class = "dropdown-item" })
+                    </div>
+                </li>
 
-                </ul>
+            </ul>
 
-</div>
+        </div>
     </nav>
 
 
@@ -59,7 +61,23 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Notice</h5>
+
+                        @if (@TempData["ModalMsg"] != null)
+                        {
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                Notice
+                            </h5>
+                        }
+                        else
+                        {
+
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                @TempData["ModalMsgHeading"]
+                            </h5>
+
+                        }
+
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -67,7 +85,7 @@
                     <div class="modal-body">
                         @TempData["ModalMsg"]
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -88,7 +106,8 @@
                 show: true
             });
         }
-    })
+        })
+
     </script>
 </body>
 </html>

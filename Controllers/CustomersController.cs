@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Jindo_Capstone.Workers;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Jindo_Capstone.Controllers
 {
@@ -34,12 +35,14 @@ namespace Jindo_Capstone.Controllers
         {
             SendTextMessageJob.Execute(id);
 
+            TempData["ModalMsg"] = "Message is sent";
             return Redirect("~/Customers/Index");
         }
 
         [HttpPost]
         public ActionResult BatchSubmit(CustomerList cl)
         {
+            TempData["ModalMsg"] = "";
             // Used to store the list of customer names for display in the CustomMessageBox
             string message = "";
 
@@ -52,10 +55,11 @@ namespace Jindo_Capstone.Controllers
                     message = message + "\n" + item.ContactName;
                 }
             }
-
+            Debug.WriteLine("Before");
             //Creates a success popup for batch submit
-            CustomMessageBox("Batch Successful", "Batch Submission message has been sent to the following clients:" + message);
-
+            TempData["ModalMsgHeading"] = "Batch Successful";
+            TempData["ModalMsg"] = "Batch Submission message has been sent to the following clients:" + message;
+            Debug.WriteLine("After");
             return Redirect("~/Customers/Index");
         }
 
@@ -81,6 +85,7 @@ namespace Jindo_Capstone.Controllers
 
         public ActionResult Unsubscribe(int id)
         {
+            TempData["ModalMsg"] = "";
             // Grab the customer
             using (DBContext db = new DBContext())
             {
@@ -96,6 +101,7 @@ namespace Jindo_Capstone.Controllers
 
         public ActionResult Subscribe(int id)
         {
+            TempData["ModalMsg"] = "";
             // Grab the customer
             using (DBContext db = new DBContext())
             {
@@ -112,18 +118,6 @@ namespace Jindo_Capstone.Controllers
         }
 
         
-        /// <summary>
-        /// Creates a custom message box with an OK button 
-        /// </summary>
-        /// <param name="caption">Caption provided for the MessageBox</param>
-        /// <param name="message">Message is the content of the MessageBox</param>
-        public void CustomMessageBox(string caption, string message) {
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
-            DialogResult dialog;
-
-            // Displays the MessageBox.
-            dialog = MessageBox.Show(message, caption, buttons);
-        }
     }
 
 
