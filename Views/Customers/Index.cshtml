@@ -36,11 +36,11 @@
                             <td>
                                 @if (@Model.Customers[i].IsSubscribed.Equals(true))
                                 {
-                                    <button onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
+                                    <button type="button" onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
                                 }
                                 else
                                 {
-                                    <button disabled onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
+                                    <button  type="button" disabled onclick="location.href='@Url.Action("Send", "Customers", new { @id = Model.Customers[i].CustID })'" class="btn btn-primary">Send Message</button>
                                 }
                             </td>
                             <td>@Model.Customers[i].ContactName</td>
