@@ -62,9 +62,10 @@ namespace Jindo_Capstone.Controllers
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
                 // Unsubscribe the customer
                 customer.IsSubscribed = false;
-                db.SaveChanges();
+                int result = db.SaveChanges();
+                if (result == 1)
+                    TempData["ModalMsg"] = "Successfully Unsubscribe";
             }
-            
             return Redirect("~/Customers/Index");
         }
 
@@ -76,8 +77,11 @@ namespace Jindo_Capstone.Controllers
                 var customer = (from c in db.Customers where c.CustID == id select c).FirstOrDefault();
                 // Subscribe the customer
                 customer.IsSubscribed = true;
-                db.SaveChanges();
+                int result = db.SaveChanges();
+                if (result == 1)
+                    TempData["ModalMsg"] = "Successfully Subscribe";
             }
+           
 
             return Redirect("~/Customers/Index");
         }
