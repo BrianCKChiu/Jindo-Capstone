@@ -18,7 +18,7 @@ namespace Jindo_Capstone.Controllers
             DBContext db = new DBContext();
             Order order = new Order
             {
-               OrderID = GenerateInvoiceNumber(1),
+               OrderID = GenerateInvoiceNumber(),
                CustID = customer.CustID,
                Date = DateTime.Now,
                OrderAmount = 10,
@@ -30,11 +30,20 @@ namespace Jindo_Capstone.Controllers
             return order;
         }
 
-        private static int GenerateInvoiceNumber(int id)
+        private static int GenerateInvoiceNumber()
         {
-            //(id : number + string)
-
-            return 0;
+            using (DBContext db = new DBContext())
+            {
+                if (db.Orders.Take(1).Count() == 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    var lastOrder = db.Orders.OrderByDescending(o => o.OrderID).FirstOrDefault();
+                    return lastOrder.OrderID + 1;
+                }
+            }
         }
 
 
