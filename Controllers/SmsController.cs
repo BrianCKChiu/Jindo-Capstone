@@ -74,7 +74,8 @@ namespace Jindo_Capstone.Controllers
                 {
                     case MessageType.Confirmation:
                         Order order = OrderController.CreateOrder(customer);
-                        response.Message(WebConfigurationManager.AppSettings["Confirmation"] + order.OrderID);
+                        String responseString = WebConfigurationManager.AppSettings["Confirmation"] + order.OrderID;
+                        response.Message(responseString);
                         break;
                     case MessageType.Unsubscribe:
                         response.Message(WebConfigurationManager.AppSettings["Unsubscribe"]);
