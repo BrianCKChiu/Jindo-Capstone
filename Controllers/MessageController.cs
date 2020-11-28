@@ -48,7 +48,7 @@ namespace Jindo_Capstone.Controllers
 
                 //updates last sent message to the recipient
                 UpdateLastMesseged(customer);
-                Messenger.SendMessage(msgObject); 
+                
 
                 if (msgType == MessageType.Request)
                 {
@@ -57,8 +57,7 @@ namespace Jindo_Capstone.Controllers
                 }
                 else
                 {
-                    SmsController smsController = new SmsController();
-                    smsController.SendMessage(msgObject);
+                    Messenger.SendMessage(msgObject);
                 }
 
                 db.Messages.Add(msgObject);
